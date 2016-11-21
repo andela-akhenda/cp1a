@@ -16,9 +16,9 @@ class Amity(object):
         people at random.
 
         Attributes:
-            rooms (list): This is a list of all Room IDs of rooms in the
+            rooms (dict): This is a dict of all Room IDs of rooms in the
             system.
-            persons (list): This is a list of all UUIDs of persons in the
+            persons (dict): This is a dict of all UUIDs of persons in the
             system.
             total_rooms (int): This is an integer representing all the
             rooms in the system.
@@ -28,8 +28,8 @@ class Amity(object):
             the data on room allocations in the system.
 
     '''
-    rooms = []
-    persons = []
+    rooms = {"Offices": [], "Living Spaces": []}
+    persons = {"Fellows": [], "Staff": []}
     total_rooms = 0
     total_persons = 0
     room_allocations = {}
@@ -52,9 +52,8 @@ class Amity(object):
 
         Returns
         -------
-        dict
-            This is a dictionary containing the details of the newly
-            created rooms.
+        string
+            This is a string showing success or failure of the operation.
 
         """
         pass
