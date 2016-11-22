@@ -44,6 +44,9 @@ class Amity(object):
         This method creates a room or multiple of rooms depending on the
         amount of items in the list it receives. So, it receives a list.
         This method should also check that no duplicate rooms can be created.
+        Another thing to be noted is that this method will create an Office by
+        default unless the last string in the arguments is "-ls" which will
+        create Living Spaces
 
         Parameters
         ----------
@@ -80,7 +83,8 @@ class Amity(object):
         -------
         dict
             This is a dictionary containing the details of the newly
-            added person.
+            added person or containing an error message when the
+            operation is not successful.
 
         """
         pass
@@ -120,8 +124,8 @@ class Amity(object):
         Returns
         -------
         dict
-            This is a dictionary containing the details of the
-            room together with all the occupants.
+            This is a dictionary containing the details of
+            current occupants.
 
         """
         pass
@@ -162,7 +166,7 @@ class Amity(object):
 
         Returns
         -------
-        dict
+        list
             This is a list of all the empty rooms in the system.
 
         """
@@ -238,6 +242,28 @@ class Amity(object):
         """
         pass
 
+    def load_people(self, infile):
+        """
+        Load People
+
+        This method load people from a text file and adds them to the
+        Amity System.
+
+        Parameters
+        ----------
+        infile : str
+            This is a string representing the name of the file that
+            contains the people to be loaded.
+
+        Returns
+        -------
+        string
+            This is a string representing a successful operation or
+            a failure
+
+        """
+        pass
+
     def save_state(self, outfile):
         """
         Persist State
@@ -254,7 +280,7 @@ class Amity(object):
         Returns
         -------
         string
-            his is a string representing a successful operation or
+            This is a string representing a successful operation or
             a failure
 
         """
@@ -276,7 +302,7 @@ class Amity(object):
         Returns
         -------
         string
-            his is a string representing a successful operation or
+            This is a string representing a successful operation or
             a failure
 
         """
