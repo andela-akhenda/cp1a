@@ -28,8 +28,8 @@ class Amity(object):
             the data on room allocations in the system.
 
     '''
-    rooms = {"Offices": [], "Living Spaces": []}
-    persons = {"Fellows": [], "Staff": []}
+    rooms = {"Offices": {}, "Living Spaces": {}}
+    persons = {"Fellows": {}, "Staff": {}}
     total_rooms = 0
     total_persons = 0
     room_allocations = {}
@@ -81,10 +81,8 @@ class Amity(object):
 
         Returns
         -------
-        dict
-            This is a dictionary containing the details of the newly
-            added person or containing an error message when the
-            operation is not successful.
+        string
+            This is a string showing success or failure of the operation.
 
         """
         pass
@@ -103,7 +101,7 @@ class Amity(object):
         Returns
         -------
         dict
-            This is a dictionary containing the details of the
+            This is a dictionary containing the details of
             a person.
 
         """
@@ -148,10 +146,8 @@ class Amity(object):
 
         Returns
         -------
-        dict
-            This is a dictionary containing the details of the room
-            the Person has been reallocated to together with all the
-            occupants.
+        string
+            This is a string showing success or failure of the operation.
 
         """
         pass
@@ -188,10 +184,8 @@ class Amity(object):
 
         Returns
         -------
-        dict
-            This is a dictionary containing the details of all the
-            allocation. The dictionary may be returned or saved in a
-            file depending on the parameter passed.
+        string
+            This is a string showing success or failure of the operation.
 
         """
         pass
@@ -212,10 +206,8 @@ class Amity(object):
 
         Returns
         -------
-        dict
-            This is a dictionary containing the details of all the
-            unallocated Persons. The dictionary may be returned or saved in a
-            file depending on the parameter passed.
+        string
+            This is a string showing success or failure of the operation.
 
         """
         pass
