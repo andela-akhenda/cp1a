@@ -9,7 +9,7 @@ class TestAmity(unittest.TestCase):
     def setUp(self):
         self.amity = Amity()
 
-    def test_amity_class_instrance(self):
+    def test_amity_class_instance(self):
         self.assertIsInstance(self.amity, Amity)
 
     @patch.dict('amity.amity.Amity.rooms', {
