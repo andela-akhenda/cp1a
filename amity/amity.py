@@ -28,8 +28,6 @@ class Amity(object):
             the data on room allocations in the system.
 
     '''
-    rooms = {"Offices": {}, "Living Spaces": {}}
-    persons = {"Fellows": {}, "Staff": {}}
     total_rooms = 0
     total_persons = 0
     room_allocations = {}
@@ -59,7 +57,23 @@ class Amity(object):
             This is a string showing success or failure of the operation.
 
         """
-        pass
+        def create_rooms_from_list(names_list, room_type="o"):
+            for name in names_list:
+                if room_type == "ls":
+                    LivingSpace(name)
+                else:
+                    Office(name)
+
+        if type(name) is not list:
+            raise TypeError("This method only accepts a list as the input.")
+        else:
+            if name[-1] != "-ls" or name[-1] != "-o":
+                create_rooms_from_list(name)
+            else:
+                if name[-1] == "-ls":
+                    create_rooms_from_list(name[:-1], "ls")
+                elif name[-1] == "-o":
+                    create_rooms_from_list(name[:-1])
 
     def add_person(self, name, role, allocate="N"):
         """
@@ -299,3 +313,14 @@ class Amity(object):
 
         """
         pass
+
+amity = Amity()
+amity.create_room('naniii')
+
+
+
+
+
+
+
+
