@@ -12,6 +12,10 @@ class TestAmity(unittest.TestCase):
     def test_amity_class_instance(self):
         self.assertIsInstance(self.amity, Amity)
 
+    def test_create_room_receives_list(self):
+        response = self.amity.create_room('Abydos')
+        self.assertRaises(TypeError, response)
+
     @patch.dict('amity.amity.Amity.rooms', {
                 "Offices": {},
                 "Living Spaces": {}
