@@ -5,12 +5,24 @@ class Room(object):
         in the Amity System. It relies heavily on the information it
         gets from it's Child Classes.
     '''
+    number_of_offices = 0
+    number_of_living_spaces = 0
+    rooms = {"Offices": {}, "Living Spaces": {}}
 
-    def __init__(self, name, type):
-        self.name = name
-        self.type = type
-        self.total_persons = 0
-        self.allocated_persons = []
+    def __init__(self, name, room_type, capacity):
+        room_key = room_type + "s"
+        room_id = name.lower()
+        self.rooms[room_key][room_id] = {}
+        self.rooms[room_key][room_id]["Room Name"] = name
+        self.rooms[room_key][room_id]["Room ID"] = room_id
+        self.rooms[room_key][room_id]["Capacity"] = capacity
+        self.rooms[room_key][room_id]["Total Persons"] = 0
+        self.rooms[room_key][room_id]["Occupants"] = {}
+        if room_type == "Office":
+            Room.number_of_offices += 1
+        elif room_type == "Living Space":
+            Room.number_of_living_spaces += 1
+        # print self.rooms
 
     def add_person(self, uuid):
         ''' This method is responsible for adding a person to a room. '''
@@ -29,11 +41,9 @@ class Office(Room):
         so as to dictate how the Room is created. It also handles
         other activities related to a Office.
     '''
-    number_of_offices = 0
 
     def __init__(self, name):
-        super(Office, self).__init__(name, "Office")
-        self.max_persons = 6
+        super(Office, self).__init__(name, "Office", 6)
 
 
 class LivingSpace(Room):
@@ -44,8 +54,12 @@ class LivingSpace(Room):
         so as to dictate how the Room is created. It also handles
         other activities related to a Living Space.
     '''
-    number_of_living_spaces = 0
 
     def __init__(self, name):
-        super(LivingSpace, self).__init__(name, "Living Space")
-        self.max_persons = 4
+        super(LivingSpace, self).__init__(name, "Living Space", 4)
+
+
+office = LivingSpace("Narnia")
+ofe = LivingSpace("Dojo")
+
+print Room.rooms
