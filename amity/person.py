@@ -5,6 +5,8 @@ class Person(object):
         in the Amity System. It relies heavily on the information it
         gets from it's Child Classes.
     '''
+    persons = {"Fellows": {}, "Staff": {}}
+
     def __init__(self, uuid, name, role):
         self.uuid = uuid
         self.name = name
