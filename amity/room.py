@@ -7,22 +7,29 @@ class Room(object):
     '''
     number_of_offices = 0
     number_of_living_spaces = 0
+    total_rooms = 0
     rooms = {"Offices": {}, "Living Spaces": {}}
+    error = ""
 
     def __init__(self, name, room_type, capacity):
         room_key = room_type + "s"
         room_id = name.lower()
-        self.rooms[room_key][room_id] = {}
-        self.rooms[room_key][room_id]["Room Name"] = name
-        self.rooms[room_key][room_id]["Room ID"] = room_id
-        self.rooms[room_key][room_id]["Capacity"] = capacity
-        self.rooms[room_key][room_id]["Total Persons"] = 0
-        self.rooms[room_key][room_id]["Occupants"] = {}
-        if room_type == "Office":
-            Room.number_of_offices += 1
-        elif room_type == "Living Space":
-            Room.number_of_living_spaces += 1
-        # print self.rooms
+        all_room_ids = Room.rooms['Offices'].keys() + Room.rooms['Living Spaces'].keys()
+        if name.lower() in all_room_ids:
+            Room.error = "A room named '" + name + "' already exists. Please choose another name."
+        else:
+            self.rooms[room_key][room_id] = {}
+            self.rooms[room_key][room_id]["Room Name"] = name
+            self.rooms[room_key][room_id]["Room ID"] = room_id
+            self.rooms[room_key][room_id]["Capacity"] = capacity
+            self.rooms[room_key][room_id]["Total Persons"] = 0
+            self.rooms[room_key][room_id]["Occupants"] = {}
+            if room_type == "Office":
+                Room.number_of_offices += 1
+            elif room_type == "Living Space":
+                Room.number_of_living_spaces += 1
+            Room.total_rooms = Room.number_of_offices + Room.number_of_living_spaces
+            Room.error = ""
 
     def add_person(self, uuid):
         ''' This method is responsible for adding a person to a room. '''
@@ -59,7 +66,4 @@ class LivingSpace(Room):
         super(LivingSpace, self).__init__(name, "Living Space", 4)
 
 
-office = LivingSpace("Narnia")
-ofe = LivingSpace("Dojo")
 
-print Room.rooms
