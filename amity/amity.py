@@ -58,16 +58,28 @@ class Amity(object):
         """
         def create_rooms_from_list(names_list, room_type="o"):
             all_rooms = Room.total_rooms
+            creation_errors = []
+            msg = ''
             for name in names_list:
                 if room_type == "ls":
                     LivingSpace(name)
                 else:
                     Office(name)
+                if Room.error:
+                    creation_errors.append(Room.error)
             new_all_rooms = Room.total_rooms
-            if Room.error and new_all_rooms - all_rooms == 0:
-                return Room.error
-            if Room.error and new_all_rooms - all_rooms > 1:
-                return "Only " + str(new_all_rooms - all_rooms) + " rooms have been successfully created because " + (Room.error[0]).lower() + Room.error[1:]
+            if creation_errors and new_all_rooms - all_rooms == 0:
+                for item in creation_errors:
+                    msg = msg + "\n" + item
+                return "No room was created beacuse:" + msg
+            if creation_errors and new_all_rooms - all_rooms >= 1:
+                for item in creation_errors:
+                    msg = msg + "\n" + item
+                if new_all_rooms - all_rooms == 1:
+                    msg2 = ' room has been'
+                elif new_all_rooms - all_rooms > 1:
+                    msg2 = ' rooms have been'
+                return "Only " + str(new_all_rooms - all_rooms) + msg2 + " successfully created because:" + msg
             elif new_all_rooms - all_rooms > 1:
                 return "Your " + str(new_all_rooms - all_rooms) + " rooms have been successfully created"
             else:
@@ -323,13 +335,13 @@ class Amity(object):
         """
         pass
 
-amity = Amity()
-print amity.create_room(['Abydos'])
-print amity.create_room(['Scala', 'Ruby', '-ls'])
-print amity.create_room(['Hogwarts', 'Oculus', 'Valhalla', 'Ruby'])
-print amity.create_room(['Oculus'])
+# amity = Amity()
+# print amity.create_room(['Abydos'])
+# print amity.create_room(['Scala', 'Ruby', '-ls'])
+# print amity.create_room(['Hogwarts', 'Oculus', 'Valhalla', 'Ruby'])
+# print amity.create_room(['Oculus'])
 
-
+# print amity.create_room(['Dakara', 'Chulak', '-ls'])
 
 
 
