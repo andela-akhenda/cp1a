@@ -14,9 +14,9 @@ class TestAmity(unittest.TestCase):
     def test_amity_class_instance(self):
         self.assertIsInstance(self.amity, Amity)
 
-    # def test_create_room_receives_list(self):
-    #     response = self.amity.create_room('Abydos')
-    #     self.assertRaises(TypeError, response)
+    def test_create_room_receives_list(self):
+        response = self.amity.create_room('Abydos')
+        self.assertRaises(TypeError, response)
 
     @patch.dict('amity.room.Room.rooms', {
                 "Offices": {},
@@ -97,7 +97,7 @@ class TestAmity(unittest.TestCase):
                         "Room ID": "dakara",
                         "Capacity": 4,
                         "Total Persons": 0,
-                        "Occupants": {}
+                        "Occupants": []
                     }
                 }
                 })
@@ -134,91 +134,91 @@ class TestAmity(unittest.TestCase):
             len(new_occupants.keys())
         )
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {},
-    #             "Living Spaces": {
-    #                 "chulak": {
-    #                     "Room Name": "Chulak",
-    #                     "Room ID": "chulak",
-    #                     "Capacity": 4,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {}
-    #                 }
-    #             }
-    #             })
-    # @patch.dict('amity.person.Person.persons', {
-    #             "Fellows": {
-    #                 "f1": {
-    #                     "uuid": "f1",
-    #                     "Name": "Colonel Jack O'Neall",
-    #                     "Role": "Fellow",
-    #                     "Boarding": "Y"
-    #                 },
-    #                 "f2": {
-    #                     "uuid": "f2",
-    #                     "Name": "Dr. Rodney McKay",
-    #                     "Role": "Fellow",
-    #                     "Boarding": "Y"
-    #                 },
-    #                 "f3": {
-    #                     "uuid": "f3",
-    #                     "Name": "Ronon Dex",
-    #                     "Role": "Fellow",
-    #                     "Boarding": "Y"
-    #                 },
-    #                 "f4": {
-    #                     "uuid": "f4",
-    #                     "Name": "Dr. Daniel Jackson",
-    #                     "Role": "Fellow",
-    #                     "Boarding": "Y"
-    #                 },
-    #                 "f5": {
-    #                     "uuid": "f5",
-    #                     "Name": "Colonel Samantha Carter",
-    #                     "Role": "Fellow",
-    #                     "Boarding": "N"
-    #                 },
-    #             },
-    #             "Staff": {}
-    #             })
-    # def test_add_to_fully_occupied_rooms(self):
-    #     response = self.amity.reallocate_person('f5', 'Chulak')
-    #     self.assertEqual(
-    #         response,
-    #         "Chulak is fully booked. Try another room."
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {},
+                "Living Spaces": {
+                    "chulak": {
+                        "Room Name": "Chulak",
+                        "Room ID": "chulak",
+                        "Capacity": 4,
+                        "Total Persons": 0,
+                        "Occupants": []
+                    }
+                }
+                })
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {
+                    "f1": {
+                        "uuid": "f1",
+                        "Name": "Colonel Jack O'Neall",
+                        "Role": "Fellow",
+                        "Boarding": "Y"
+                    },
+                    "f2": {
+                        "uuid": "f2",
+                        "Name": "Dr. Rodney McKay",
+                        "Role": "Fellow",
+                        "Boarding": "Y"
+                    },
+                    "f3": {
+                        "uuid": "f3",
+                        "Name": "Ronon Dex",
+                        "Role": "Fellow",
+                        "Boarding": "Y"
+                    },
+                    "f4": {
+                        "uuid": "f4",
+                        "Name": "Dr. Daniel Jackson",
+                        "Role": "Fellow",
+                        "Boarding": "Y"
+                    },
+                    "f5": {
+                        "uuid": "f5",
+                        "Name": "Colonel Samantha Carter",
+                        "Role": "Fellow",
+                        "Boarding": "N"
+                    },
+                },
+                "Staff": {}
+                })
+    def test_add_to_fully_occupied_rooms(self):
+        response = self.amity.reallocate_person('f5', 'Chulak')
+        self.assertEqual(
+            response,
+            "Chulak is fully booked. Try another room."
+        )
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {
-    #                 "abydos": {
-    #                     "Room Name": "Abydos",
-    #                     "Room ID": "abydos",
-    #                     "Capacity": 6,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {}
-    #                 },
-    #                 "chulak": {
-    #                     "Room Name": "Chulak",
-    #                     "Room ID": "chulak",
-    #                     "Capacity": 6,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {}
-    #                 },
-    #                 "argos": {
-    #                     "Room Name": "Argos",
-    #                     "Room ID": "argos",
-    #                     "Capacity": 6,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {}
-    #                 },
-    #             },
-    #             "Living Spaces": {}
-    #             })
-    # def test_get_empty_rooms(self):
-    #     self.assertEqual(
-    #         self.amity.get_empty_rooms(),
-    #         sorted(['Abydos', 'Chulak', 'Argos'])
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {
+                    "abydos": {
+                        "Room Name": "Abydos",
+                        "Room ID": "abydos",
+                        "Capacity": 6,
+                        "Total Persons": 0,
+                        "Occupants": []
+                    },
+                    "chulak": {
+                        "Room Name": "Chulak",
+                        "Room ID": "chulak",
+                        "Capacity": 6,
+                        "Total Persons": 0,
+                        "Occupants": []
+                    },
+                    "argos": {
+                        "Room Name": "Argos",
+                        "Room ID": "argos",
+                        "Capacity": 6,
+                        "Total Persons": 0,
+                        "Occupants": []
+                    },
+                },
+                "Living Spaces": {}
+                })
+    def test_get_empty_rooms(self):
+        self.assertEqual(
+            self.amity.get_empty_rooms(),
+            sorted(['Abydos', 'Chulak', 'Argos'])
+        )
 
     @patch.dict('amity.room.Room.rooms', {
                 "Offices": {},
@@ -242,7 +242,7 @@ class TestAmity(unittest.TestCase):
                         "Room ID": "daedalus",
                         "Capacity": 6,
                         "Total Persons": 0,
-                        "Occupants": {}
+                        "Occupants": []
                     }
                 },
                 "Living Spaces": {}
@@ -259,13 +259,13 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(
             occupants,
             {
-                "Slot 1": {
+                "f1": {
                     "uuid": "f1",
                     "Name": "Daniel Jackson",
                     "Role": "Fellow",
                     "Boarding": "Y"
                 },
-                "Slot 2": {
+                "s1": {
                     "uuid": "s1",
                     "Name": "General Hammond",
                     "Role": "Staff",
@@ -274,145 +274,118 @@ class TestAmity(unittest.TestCase):
             }
         )
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {},
-    #             "Living Spaces": {}
-    #             })
-    # @patch.dict('amity.person.Person.persons', {
-    #             "Fellows": {},
-    #             "Staff": {}
-    #             })
-    # def test_staff_cannot_be_allocated_living_space(self):
-    #     self.amity.create_room(['Wraith', '-ls'])
-    #     response = self.amity.add_person('Tod The Wraith', 'Staff')
-    #     self.assertEqual(
-    #         response,
-    #         "Staff cannot be allocated Living Space"
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {},
+                "Living Spaces": {}
+                })
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {},
+                "Staff": {}
+                })
+    def test_staff_cannot_be_allocated_living_space(self):
+        self.amity.create_room(['Wraith', '-ls'])
+        response = self.amity.add_person('Tod The Wraith', 'Staff')
+        self.assertEqual(
+            response,
+            "Staff cannot be allocated Living Space"
+        )
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {
-    #                 "abydos": {
-    #                     "Room Name": "Abydos",
-    #                     "Room ID": "abydos",
-    #                     "Capacity": 6,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {
-    #                         "Slot 1": {
-    #                             "uuid": "f1",
-    #                             "Name": "Daniel Jackson",
-    #                             "Role": "Fellow",
-    #                             "Boarding": "Y"
-    #                         },
-    #                         "Slot 2": {
-    #                             "uuid": "s1",
-    #                             "Name": "General Hammond",
-    #                             "Role": "Staff",
-    #                             "Boarding": "N"
-    #                         }
-    #                     }
-    #                 }
-    #             },
-    #             "Living Spaces": {
-    #                 "daedalus": {
-    #                     "Room Name": "Daedalus",
-    #                     "Room ID": "daedalus",
-    #                     "Capacity": 4,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {
-    #                         "Slot 1": {
-    #                             "uuid": "f2",
-    #                             "Name": "Jack O'Neall",
-    #                             "Role": "Fellow",
-    #                             "Boarding": "Y"
-    #                         }
-    #                     }
-    #                 }
-    #             }
-    #             })
-    # def test_print_allocations(self):
-    #     self.assertEqual(
-    #         self.amity.print_allocations,
-    #         "Successfuly printed and saved the allocations to a file"
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {
+                    "abydos": {
+                        "Room Name": "Abydos",
+                        "Room ID": "abydos",
+                        "Capacity": 6,
+                        "Total Persons": 0,
+                        "Occupants": ['f1', 's1']
+                    }
+                },
+                "Living Spaces": {
+                    "daedalus": {
+                        "Room Name": "Daedalus",
+                        "Room ID": "daedalus",
+                        "Capacity": 4,
+                        "Total Persons": 0,
+                        "Occupants": ['f2']
+                    }
+                }
+                })
+    def test_print_allocations(self):
+        self.assertEqual(
+            self.amity.print_allocations,
+            "Successfuly printed and saved the allocations to a file"
+        )
 
-    # @patch.dict('amity.person.Person.persons', {
-    #             "Fellows": {
-    #                 "f1": {
-    #                     "uuid": "f1",
-    #                     "Name": "Colonel Jack O'Neall",
-    #                     "Role": "Fellow",
-    #                     "Boarding": "N"
-    #                 },
-    #                 "f2": {
-    #                     "uuid": "f2",
-    #                     "Name": "Dr. Rodney McKay",
-    #                     "Role": "Fellow",
-    #                     "Boarding": "Y"
-    #                 }
-    #             },
-    #             "Staff": {
-    #                 "s1": {
-    #                     "uuid": "s1",
-    #                     "Name": "Ronon Dex",
-    #                     "Role": "Staff",
-    #                     "Boarding": "N"
-    #                 }
-    #             }
-    #             })
-    # def test_print_unallocated(self):
-    #     self.assertEqual(
-    #         self.amity.print_unallocated,
-    #         "Successfuly printed and saved all the unallocated people"
-    #     )
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {
+                    "f1": {
+                        "uuid": "f1",
+                        "Name": "Colonel Jack O'Neall",
+                        "Role": "Fellow",
+                        "Boarding": "N"
+                    },
+                    "f2": {
+                        "uuid": "f2",
+                        "Name": "Dr. Rodney McKay",
+                        "Role": "Fellow",
+                        "Boarding": "Y"
+                    }
+                },
+                "Staff": {
+                    "s1": {
+                        "uuid": "s1",
+                        "Name": "Ronon Dex",
+                        "Role": "Staff",
+                        "Boarding": "N"
+                    }
+                }
+                })
+    def test_print_unallocated(self):
+        self.assertEqual(
+            self.amity.print_unallocated,
+            "Successfuly printed and saved all the unallocated people"
+        )
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {},
-    #             "Living Spaces": {}
-    #             })
-    # def test_print_room(self):
-    #     self.amity.create_room(['Dakara', '-ls'])
-    #     self.amity.add_person("Jaffa Teal'c", 'Fellow', 'Y')
-    #     response = self.amity.print_room('dakara')
-    #     self.assertEqual(
-    #         response,
-    #         {
-    #             "Room Name": "Dakara",
-    #             "Room ID": "dakara",
-    #             "Capacity": 4,
-    #             "Total Persons": 1,
-    #             "Occupants": {
-    #                 "Slot 1": {
-    #                     "uuid": "f1",
-    #                     "Name": "Jaffa Teal'c",
-    #                     "Role": "Fellow",
-    #                     "Boarding": "Y"
-    #                 }
-    #             }
-    #         }
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {},
+                "Living Spaces": {}
+                })
+    def test_print_room(self):
+        self.amity.create_room(['Dakara', '-ls'])
+        self.amity.add_person("Jaffa Teal'c", 'Fellow', 'Y')
+        response = self.amity.print_room('dakara')
+        self.assertEqual(
+            response,
+            {
+                "Room Name": "Dakara",
+                "Room ID": "dakara",
+                "Capacity": 4,
+                "Total Persons": 1,
+                "Occupants": ['f1']
+            }
+        )
 
-    # # TODO: Add file usage Mock here
-    # def test_load_people_from_file(self):
-    #     response = self.amity.load_people("test_people.txt")
-    #     self.assertEqual(
-    #         response,
-    #         "People have been successfuly added to the system."
-    #     )
+    # TODO: Add file usage Mock here
+    def test_load_people_from_file(self):
+        response = self.amity.load_people("test_people.txt")
+        self.assertEqual(
+            response,
+            "People have been successfuly added to the system."
+        )
 
-    # # TODO: Add DB usage Mock here
-    # def test_save_state(self):
-    #     self.assertEqual(
-    #         self.amity.save_state("test.db"),
-    #         "You have successfuly persisted the state of the Application."
-    #     )
+    # TODO: Add DB usage Mock here
+    def test_save_state(self):
+        self.assertEqual(
+            self.amity.save_state("test.db"),
+            "You have successfuly persisted the state of the Application."
+        )
 
-    # # TODO: Add DB usage Mock here
-    # def test_load_state(self):
-    #     self.assertEqual(
-    #         self.amity.load_state("test.db"),
-    #         "You have successfuly a previously saved state."
-    #     )
+    # TODO: Add DB usage Mock here
+    def test_load_state(self):
+        self.assertEqual(
+            self.amity.load_state("test.db"),
+            "You have successfuly a previously saved state."
+        )
 
 
 if __name__ == '__main__':
