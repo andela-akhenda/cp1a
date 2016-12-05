@@ -26,62 +26,57 @@ class TestAmity(unittest.TestCase):
         response = self.amity.create_room(['Abydos'])
         self.assertEqual(response, "The room has been successfully created")
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {
-    #                 "abydos": {
-    #                     "Room Name": "Abydos",
-    #                     "Room ID": "abydos",
-    #                     "Capacity": 6,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {}
-    #                 }
-    #             },
-    #             "Living Spaces": {}
-    #             })
-    # @patch.dict('amity.person.Person.persons', {
-    #             "Fellows": {
-    #                 "f1": {
-    #                     "uuid": "f1",
-    #                     "Name": "Jaffa Teal'c",
-    #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "Y"
-    #                 }
-    #             },
-    #             "Staff": {}
-    #             })
-    # def test_add_person(self):
-    #     add = self.amity.add_person('General Hammond', 'Staff')
-    #     duplicate_add = self.amity.add_person("Jaffa Teal'c", 'Fellow', 'Y')
-    #     add_staff = self.amity.add_person('Samantha Carter', 'Staff', 'Y')
-    #     self.assertEqual(
-    #         add,
-    #         'The Staff member has been added successfuly'
-    #     )
-    #     self.assertEqual(
-    #         duplicate_add,
-    #         'There already exists a person with the name "Jaffa Teal\'c"!'
-    #     )
-    #     self.assertEqual(
-    #         add_staff,
-    #         'Cannot allocate Staff a living space'
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {
+                    "abydos": {
+                        "Room Name": "Abydos",
+                        "Room ID": "abydos",
+                        "Capacity": 6,
+                        "Total Persons": 0,
+                        "Occupants": []
+                    }
+                },
+                "Living Spaces": {}
+                })
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {
+                    "f1": {
+                        "uuid": "f1",
+                        "Name": "Jaffa Teal'c",
+                        "Role": "Fellow",
+                        "Boarding": "Y"
+                    }
+                },
+                "Staff": {}
+                })
+    def test_add_person(self):
+        add = self.amity.add_person('General Hammond', 'Staff')
+        add_staff = self.amity.add_person('Samantha Carter', 'Staff', 'Y')
+        self.assertEqual(
+            add,
+            'The Staff has been added successfuly'
+        )
+        self.assertIn(
+            'Cannot allocate Staff a living space',
+            add_staff
+        )
 
-    # @patch.dict('amity.person.Person.persons', {
-    #             "Fellows": {},
-    #             "Staff": {}
-    #             })
-    # @patch('amity.amity.Amity.get_person_details')
-    # def test_if_a_person_is_fellow_or_staff(self, mock_get_person_details):
-    #     mock_get_person_details.return_value = {
-    #         "uuid": "s1",
-    #         "Name": "General Hammond",
-    #         "Role": "Staff",
-    #         "Wants Accommodation": "N"
-    #     }
-    #     self.amity.add_person('General Hammond', 'Staff')
-    #     # we should pass 'uuid' here
-    #     response = mock_get_person_details('s1')
-    #     self.assertEqual(response['Role'], "Staff")
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {},
+                "Staff": {}
+                })
+    @patch('amity.amity.Amity.get_person_details')
+    def test_if_a_person_is_fellow_or_staff(self, mock_get_person_details):
+        mock_get_person_details.return_value = {
+            "uuid": "s1",
+            "Name": "General Hammond",
+            "Role": "Staff",
+            "Boarding": "N"
+        }
+        self.amity.add_person('General Hammond', 'Staff')
+        # we should pass 'uuid' here
+        response = mock_get_person_details('s1')
+        self.assertEqual(response['Role'], "Staff")
 
     @patch.dict('amity.room.Room.rooms', {
                 "Offices": {},
@@ -114,30 +109,30 @@ class TestAmity(unittest.TestCase):
         )
         self.assertIn("Only 1 room has been successfully created", response)
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {
-    #                 "abydos": {
-    #                     "Room Name": "Abydos",
-    #                     "Room ID": "abydos",
-    #                     "Capacity": 6,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {}
-    #                 }
-    #             },
-    #             "Living Spaces": {}
-    #             })
-    # @patch.dict('amity.person.Person.persons', {
-    #             "Fellows": {},
-    #             "Staff": {}
-    #             })
-    # def test_occupants_increment_on_allocation(self):
-    #     prev_occupants = self.amity.get_current_occupants('abydos')
-    #     self.amity.add_person('Daniel Jackson', 'Fellow', 'Y')
-    #     new_occupants = self.amity.get_current_occupants('abydos')
-    #     self.assertEqual(
-    #         len(prev_occupants.keys()) + 1,
-    #         len(new_occupants.keys())
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {
+                    "abydos": {
+                        "Room Name": "Abydos",
+                        "Room ID": "abydos",
+                        "Capacity": 6,
+                        "Total Persons": 0,
+                        "Occupants": []
+                    }
+                },
+                "Living Spaces": {}
+                })
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {},
+                "Staff": {}
+                })
+    def test_occupants_increment_on_allocation(self):
+        prev_occupants = self.amity.get_current_occupants('abydos')
+        self.amity.add_person('Daniel Jackson', 'Fellow', 'Y')
+        new_occupants = self.amity.get_current_occupants('abydos')
+        self.assertEqual(
+            len(prev_occupants.keys()) + 1,
+            len(new_occupants.keys())
+        )
 
     # @patch.dict('amity.room.Room.rooms', {
     #             "Offices": {},
@@ -157,31 +152,31 @@ class TestAmity(unittest.TestCase):
     #                     "uuid": "f1",
     #                     "Name": "Colonel Jack O'Neall",
     #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "Y"
+    #                     "Boarding": "Y"
     #                 },
     #                 "f2": {
     #                     "uuid": "f2",
     #                     "Name": "Dr. Rodney McKay",
     #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "Y"
+    #                     "Boarding": "Y"
     #                 },
     #                 "f3": {
     #                     "uuid": "f3",
     #                     "Name": "Ronon Dex",
     #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "Y"
+    #                     "Boarding": "Y"
     #                 },
     #                 "f4": {
     #                     "uuid": "f4",
     #                     "Name": "Dr. Daniel Jackson",
     #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "Y"
+    #                     "Boarding": "Y"
     #                 },
     #                 "f5": {
     #                     "uuid": "f5",
     #                     "Name": "Colonel Samantha Carter",
     #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "N"
+    #                     "Boarding": "N"
     #                 },
     #             },
     #             "Staff": {}
@@ -225,59 +220,59 @@ class TestAmity(unittest.TestCase):
     #         sorted(['Abydos', 'Chulak', 'Argos'])
     #     )
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {},
-    #             "Living Spaces": {}
-    #             })
-    # @patch.dict('amity.person.Person.persons', {
-    #             "Fellows": {},
-    #             "Staff": {}
-    #             })
-    # def test_response_on_no_rooms(self):
-    #     response = self.amity.add_person("Colonel Samantha Carter", "Staff")
-    #     self.assertEqual(
-    #         response,
-    #         "There are currently no rooms available"
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {},
+                "Living Spaces": {}
+                })
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {},
+                "Staff": {}
+                })
+    def test_response_on_no_rooms(self):
+        response = self.amity.add_person("Colonel Samantha Carter", "Staff")
+        self.assertIn(
+            "The system has no rooms",
+            response
+        )
 
-    # @patch.dict('amity.room.Room.rooms', {
-    #             "Offices": {
-    #                 "daedalus": {
-    #                     "Room Name": "Daedalus",
-    #                     "Room ID": "daedalus",
-    #                     "Capacity": 6,
-    #                     "Total Persons": 0,
-    #                     "Occupants": {}
-    #                 }
-    #             },
-    #             "Living Spaces": {}
-    #             })
-    # @patch.dict('amity.person.Person.persons', {
-    #             "Fellows": {},
-    #             "Staff": {}
-    #             })
-    # def test_occupants_after_reallocation(self):
-    #     self.amity.add_person('Daniel Jackson', 'Fellow', 'Y')
-    #     self.amity.add_person('General Hammond', 'Staff')
-    #     occupants = self.amity.get_current_occupants('daedalus')
-    #     # We ca also use Python's cmp() function below
-    #     self.assertEqual(
-    #         occupants,
-    #         {
-    #             "Slot 1": {
-    #                 "uuid": "f1",
-    #                 "Name": "Daniel Jackson",
-    #                 "Role": "Fellow",
-    #                 "Wants Accommodation": "Y"
-    #             },
-    #             "Slot 2": {
-    #                 "uuid": "s1",
-    #                 "Name": "General Hammond",
-    #                 "Role": "Staff",
-    #                 "Wants Accommodation": "N"
-    #             }
-    #         }
-    #     )
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {
+                    "daedalus": {
+                        "Room Name": "Daedalus",
+                        "Room ID": "daedalus",
+                        "Capacity": 6,
+                        "Total Persons": 0,
+                        "Occupants": {}
+                    }
+                },
+                "Living Spaces": {}
+                })
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {},
+                "Staff": {}
+                })
+    def test_occupants_after_reallocation(self):
+        self.amity.add_person('Daniel Jackson', 'Fellow', 'Y')
+        self.amity.add_person('General Hammond', 'Staff')
+        occupants = self.amity.get_current_occupants('daedalus')
+        # We ca also use Python's cmp() function below
+        self.assertEqual(
+            occupants,
+            {
+                "Slot 1": {
+                    "uuid": "f1",
+                    "Name": "Daniel Jackson",
+                    "Role": "Fellow",
+                    "Boarding": "Y"
+                },
+                "Slot 2": {
+                    "uuid": "s1",
+                    "Name": "General Hammond",
+                    "Role": "Staff",
+                    "Boarding": "N"
+                }
+            }
+        )
 
     # @patch.dict('amity.room.Room.rooms', {
     #             "Offices": {},
@@ -307,13 +302,13 @@ class TestAmity(unittest.TestCase):
     #                             "uuid": "f1",
     #                             "Name": "Daniel Jackson",
     #                             "Role": "Fellow",
-    #                             "Wants Accommodation": "Y"
+    #                             "Boarding": "Y"
     #                         },
     #                         "Slot 2": {
     #                             "uuid": "s1",
     #                             "Name": "General Hammond",
     #                             "Role": "Staff",
-    #                             "Wants Accommodation": "N"
+    #                             "Boarding": "N"
     #                         }
     #                     }
     #                 }
@@ -329,7 +324,7 @@ class TestAmity(unittest.TestCase):
     #                             "uuid": "f2",
     #                             "Name": "Jack O'Neall",
     #                             "Role": "Fellow",
-    #                             "Wants Accommodation": "Y"
+    #                             "Boarding": "Y"
     #                         }
     #                     }
     #                 }
@@ -347,13 +342,13 @@ class TestAmity(unittest.TestCase):
     #                     "uuid": "f1",
     #                     "Name": "Colonel Jack O'Neall",
     #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "N"
+    #                     "Boarding": "N"
     #                 },
     #                 "f2": {
     #                     "uuid": "f2",
     #                     "Name": "Dr. Rodney McKay",
     #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "Y"
+    #                     "Boarding": "Y"
     #                 }
     #             },
     #             "Staff": {
@@ -361,7 +356,7 @@ class TestAmity(unittest.TestCase):
     #                     "uuid": "s1",
     #                     "Name": "Ronon Dex",
     #                     "Role": "Staff",
-    #                     "Wants Accommodation": "N"
+    #                     "Boarding": "N"
     #                 }
     #             }
     #             })
@@ -391,7 +386,7 @@ class TestAmity(unittest.TestCase):
     #                     "uuid": "f1",
     #                     "Name": "Jaffa Teal'c",
     #                     "Role": "Fellow",
-    #                     "Wants Accommodation": "Y"
+    #                     "Boarding": "Y"
     #                 }
     #             }
     #         }

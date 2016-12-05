@@ -1,3 +1,6 @@
+from random import choice
+
+
 class Room(object):
     ''' Room Class
 
@@ -23,7 +26,7 @@ class Room(object):
             self.rooms[room_key][room_id]["Room ID"] = room_id
             self.rooms[room_key][room_id]["Capacity"] = capacity
             self.rooms[room_key][room_id]["Total Persons"] = 0
-            self.rooms[room_key][room_id]["Occupants"] = {}
+            self.rooms[room_key][room_id]["Occupants"] = []
             if room_type == "Office":
                 Room.number_of_offices += 1
             elif room_type == "Living Space":
@@ -31,9 +34,32 @@ class Room(object):
             Room.total_rooms = Room.number_of_offices + Room.number_of_living_spaces
             Room.error = ""
 
-    def add_person(self, uuid):
-        ''' This method is responsible for adding a person to a room. '''
-        pass
+    @staticmethod
+    def add_person(uuid, role, room_type):
+        ''' Add Person Method
+
+            This method is responsible for adding a person to a random room.
+            It also checks if the system has any rooms before adding a person
+            or if the rooms available are not fully occupied before assigning
+            the person a random room.
+        '''
+        room_key = room_type + "s"
+        all_rooms = Room.rooms[room_key].keys()
+        if len(all_rooms) == 0:
+            Room.error = "The system has no rooms. Please add rooms before adding persons."
+            return Room.error
+        available_rooms = []
+        for room in all_rooms:
+            if Room.rooms[room_key][room]['Total Persons'] < Room.rooms[room_key][room]['Capacity']:
+                available_rooms.append(room)
+        if len(available_rooms) == 0:
+            Room.error = "There are currently no rooms available. All rooms are booked."
+            return Room.error
+        random_room = choice(available_rooms)
+        Room.rooms[room_key][random_room]['Occupants'].append(uuid)
+        Room.rooms[room_key][random_room]['Total Persons'] += 1
+        Room.error = ""
+        # print Room.rooms[room_key][random_room]
 
     def remove_person(self, uuid):
         ''' This method is responsible for removing a person from a room. '''

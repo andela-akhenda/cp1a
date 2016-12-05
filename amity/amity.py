@@ -1,4 +1,4 @@
-from person import Fellow, Staff
+from person import Person, Fellow, Staff
 from room import Room, Office, LivingSpace
 
 
@@ -28,7 +28,6 @@ class Amity(object):
             the data on room allocations in the system.
 
     '''
-    total_persons = 0
     room_allocations = {}
 
     def __init__(self):
@@ -120,7 +119,45 @@ class Amity(object):
             This is a string showing success or failure of the operation.
 
         """
-        pass
+        if type(name) is not str and type(role) is not str and type(allocate) is not str:
+            raise TypeError("This method only accepts strings as the input.")
+        else:
+            all_persons = Person.total_persons
+            creation_errors = []
+            msg = ''
+            if allocate != "Y" and allocate != "N":
+                creation_errors.append("Allocate only accepts 'Y' or 'N'")
+            if role == "Staff":
+                temp_staff = Staff(name)
+                if allocate == "Y":
+                    creation_errors.append("Cannot allocate Staff a living space")
+                Room.add_person(temp_staff.uuid, "Staff", "Office")
+                if Room.error:
+                    creation_errors.append(Room.error)
+            elif role == "Fellow":
+                temp_fellow = Fellow(name)
+                if allocate == "Y":
+                    Room.add_person(temp_fellow.uuid, "Fellows", "Office")
+                    if Room.error:
+                        creation_errors.append(Room.error)
+                    Room.add_person(temp_fellow.uuid, "Fellows", "Living Space")
+                elif allocate == "N":
+                    Room.add_person(temp_fellow.uuid, "Fellows", "Office")
+                if Room.error:
+                    creation_errors.append(Room.error)
+            else:
+                raise ValueError("Please check that the entered role is either 'Fellow' or 'Staff'")
+            new_all_persons = Person.total_persons
+            if creation_errors and new_all_persons - all_persons == 0:
+                for item in creation_errors:
+                    msg = msg + "\n" + item
+                return "No person was added to the system beacuse:" + msg
+            if creation_errors and new_all_persons - all_persons >= 1:
+                for item in creation_errors:
+                    msg = msg + "\n - " + item
+                return "The person has been added successfuly but with the following problem(s):" + msg
+            else:
+                return "The " + role + " has been added successfuly"
 
     def get_person_details(self, uuid):
         """
@@ -161,7 +198,18 @@ class Amity(object):
             current occupants.
 
         """
-        pass
+        if type(r_id) is not str:
+            raise TypeError("This method only accepts a string as the input.")
+        else:
+            occupants_dict = {}
+            all_offices = Room.rooms["Offices"]
+            all_living_spaces = Room.rooms["Living Spaces"]
+            all_rooms = dict(all_offices, **all_living_spaces)
+            if r_id in all_rooms.keys():
+                occupants = all_rooms[r_id]['Occupants']
+            for occupant in occupants:
+                occupants_dict[occupant] = Person.get_person(occupant)
+            return occupants_dict
 
     def reallocate_person(self, uuid, room_name):
         """
@@ -336,15 +384,19 @@ class Amity(object):
         pass
 
 # amity = Amity()
-# print amity.create_room(['Abydos'])
-# print amity.create_room(['Scala', 'Ruby', '-ls'])
-# print amity.create_room(['Hogwarts', 'Oculus', 'Valhalla', 'Ruby'])
-# print amity.create_room(['Oculus'])
+# amity.create_room(['Abydos'])
+# amity.create_room(['Scala', 'Ruby', '-ls'])
+# amity.create_room(['Hogwarts', 'Oculus', 'Valhalla', 'Ruby'])
+# amity.create_room(['Oculus'])
 
-# print amity.create_room(['Dakara', 'Chulak', '-ls'])
+# amity.create_room(['Dakara', 'Chulak', '-ls'])
 
 
+# amity.add_person('General Hammond', 'Staff')
+# amity.add_person("Jaffa Teal'c", 'Fellow', 'Y')
+# amity.add_person('Samantha Carter', 'Staff', 'Y')
 
+# print amity.get_current_occupants('scala')
 
 
 
