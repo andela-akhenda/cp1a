@@ -6,9 +6,9 @@ install:
   - pip install coveralls
   - pip install codacy-coverage
 script:
-  python setup.py test
-  coverage xml
-  export CODACY_PROJECT_TOKEN=e57064de72e446728435d088294afa84
-  python-codacy-coverage -r coverage.xml
+  - python setup.py test
+  - coverage xml
+  - export CODACY_PROJECT_TOKEN=e57064de72e446728435d088294afa84
+  - python-codacy-coverage -r coverage.xml
 after_success:
   coveralls
