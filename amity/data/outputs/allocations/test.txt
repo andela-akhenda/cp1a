@@ -1,0 +1,40 @@
+==============================
+         Offices
+==============================
+
+HOGWARTS
+---------------------------------------------------------------------------------
+SIMON PATTERSON, TANA LOPEZ, SAMANTHA CARTER 4, JAFFA TEAL'C 5, SAMANTHA CARTER 5
+
+VALHALLA
+----------------------------------------------------------------------------------------
+JAFFA TEAL'C, GENERAL HAMMOND 2, GENERAL HAMMOND 3, GENERAL HAMMOND 4, GENERAL HAMMOND 5
+
+ABYDOS
+----------------------------------------------------------------------------------------------
+OLUWAFEMI SULE, DOMINIC WALTERS, LEIGH RILEY, GENERAL HAMMOND, SAMANTHA CARTER, JAFFA TEAL'C 2
+
+OCULUS
+--------------------------------------------------------------------------------------------------
+MARI LAWRENCE, KELLY MCGUIRE, SAMANTHA CARTER 2, JAFFA TEAL'C 3, SAMANTHA CARTER 3, JAFFA TEAL'C 4
+
+==============================
+         Living Spaces
+==============================
+
+DAKARA
+--------------
+OLUWAFEMI SULE
+
+CHULAK
+------------------------------------------
+SIMON PATTERSON, MARI LAWRENCE, TANA LOPEZ
+
+SCALA
+------------------------------
+JAFFA TEAL'C 3, JAFFA TEAL'C 5
+
+ARGOS
+------------------------------
+JAFFA TEAL'C 2, JAFFA TEAL'C 4
+

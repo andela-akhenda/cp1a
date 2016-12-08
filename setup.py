@@ -9,6 +9,15 @@ with open('README.md') as f:
 with open('LICENSE') as f:
     license = f.read()
 
+setup_requires = [
+    'pytest-runner',
+    ]
+
+tests_require = [
+    'pytest-cov',
+    'pytest',
+    ]
+
 setup(
     name='amity',
     version='0.0.1',
@@ -18,5 +27,7 @@ setup(
     author_email='joseph.akhenda@andela.com',
     url='https://github.com/andela-akhenda/cp1a',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs'))
+    packages=find_packages(exclude=('tests', 'docs')),
+    setup_requires=setup_requires,
+    tests_require=tests_require,
 )

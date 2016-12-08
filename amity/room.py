@@ -1,4 +1,5 @@
 from random import choice
+from person import Person
 
 
 class Room(object):
@@ -33,9 +34,12 @@ class Room(object):
                 Room.number_of_living_spaces += 1
             Room.total_rooms = Room.number_of_offices + Room.number_of_living_spaces
             Room.error = ""
+        self.name = name
+        self.room_type = room_type
+        self.capacity = capacity
 
     @staticmethod
-    def add_person(uuid, role, room_type):
+    def add_person(uuid, role, room_type, allocate="N"):
         ''' Add Person Method
 
             This method is responsible for adding a person to a random room.
@@ -57,13 +61,17 @@ class Room(object):
             return Room.error
         random_room = choice(available_rooms)
         Room.rooms[room_key][random_room]['Occupants'].append(uuid)
+        Person.persons[role][uuid]['Boarding'] = allocate
+
+        # if type(Room.rooms[room_key][random_room]['Total Persons']) is not str:
+        #     Room.rooms[room_key][random_room]['Total Persons'] += 1
+        # else:
+        #     Room.rooms[room_key][random_room]['Total Persons'] = 0
+
+        ''' Uncomment the above lines if the import from DB messes the Total
+            Persons field. Remember to also delete the line below. '''
         Room.rooms[room_key][random_room]['Total Persons'] += 1
         Room.error = ""
-        # print Room.rooms[room_key][random_room]
-
-    def remove_person(self, uuid):
-        ''' This method is responsible for removing a person from a room. '''
-        pass
 
 
 class Office(Room):
@@ -90,6 +98,3 @@ class LivingSpace(Room):
 
     def __init__(self, name):
         super(LivingSpace, self).__init__(name, "Living Space", 4)
-
-
-

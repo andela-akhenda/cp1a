@@ -13,19 +13,23 @@ class Person(object):
 
     def __init__(self, uuid, name, role):
         if role == "Fellow":
-            role = role + "s"
-        self.persons[role][uuid] = {}
-        self.persons[role][uuid]["uuid"] = uuid
-        self.persons[role][uuid]["Name"] = name
-        self.persons[role][uuid]["Role"] = role
-        self.persons[role][uuid]["Boarding"] = "N"
-        if role[:-1] == "Fellows":
+            role_key = role + "s"
+        else:
+            role_key = role
+        self.persons[role_key][uuid] = {}
+        self.persons[role_key][uuid]["uuid"] = uuid
+        self.persons[role_key][uuid]["Name"] = name
+        self.persons[role_key][uuid]["Role"] = role
+        self.persons[role_key][uuid]["Boarding"] = "N"
+        if role == "Fellow":
             Person.number_of_fellows += 1
         elif role == "Staff":
             Person.number_of_staff += 1
         Person.total_persons = Person.number_of_fellows + Person.number_of_staff
         Person.error = ""
         self.uuid = uuid
+        self.role = role
+        self.name = name
 
     @staticmethod
     def get_person(uuid):
@@ -33,7 +37,7 @@ class Person(object):
             Person's details.
         '''
         if type(uuid) is not str:
-            raise TypeError("This method only accepts a string as the input.")
+            return TypeError("This method only accepts a string as the input.")
         else:
             all_fellows = Person.persons["Fellows"]
             all_staff = Person.persons["Staff"]
@@ -58,9 +62,6 @@ class Fellow(Person):
             "f" + str(Person.number_of_fellows + 1), name, "Fellow"
         )
 
-    def is_allocated_room(self):
-        pass
-
 
 class Staff(Person):
     ''' Staff Class
@@ -75,6 +76,3 @@ class Staff(Person):
         super(Staff, self).__init__(
             "s" + str(Person.number_of_staff + 1), name, "Staff"
         )
-
-    def is_allocated_room(self):
-        pass
