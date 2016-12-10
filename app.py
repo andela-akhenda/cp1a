@@ -18,26 +18,27 @@ Usage:
     app.py quit
     quit
 Arguments
-  <room_name> Unique name for them Room to be created or querried
-  <first_name> The first name of the Person
-  <last_name> The last name of the Person
-  <job_type> The role of the Person being added i.e. Fellow or Staff
-  <wants_accommodation> Whether Person wants accomodation or not i.e 'N' or 'Y'
-  <person_identifier> Unique User ID of the Person
-  <new_room_name> The Room name to reallocate the Person to.
-  <filename> Name of input or output data file
-  <sqlite_database> Name of output or input DB
+    <room_name>           Unique name for them Room to be created or querried
+    <first_name>          The first name of the Person
+    <last_name>           The last name of the Person
+    <job_type>            The role of the Person being added i.e. Fellow or Staff
+    <wants_accommodation> Whether Person wants accomodation or not i.e 'N' or 'Y'
+    <person_identifier>   Unique User ID of the Person
+    <new_room_name>       The Room name to reallocate the Person to.
+    <filename>            Name of input or output data file
+    <sqlite_database>     Name of output or input DB
 Options:
-    -i --interactive Interactive Mode
-    -h --help Show this screen and exit
-    -ls --livingspace Living Space Room
-    -of --office Office Room type
-    -o filename Specify filename
-    --db sqlite_databse Name of SQLite Database
+    -i --interactive        Interactive Mode
+    -h --help               Show this screen and exit
+    -ls --livingspace       Living Space Room
+    -of --office Office     Room type
+    -o filename             Specify filename
+    --db sqlite_databse     Name of SQLite Database
     -v --version
 """
 
 import os
+import sys
 import cmd
 from termcolor import cprint, colored
 from pyfiglet import figlet_format
@@ -149,11 +150,13 @@ class AmityCLI(cmd.Cmd):
     def do_quit(self, args):
         """ Quits the interactive mode"""
         print "Goodbye!"
-        print "Shutting Down Amity......"
+        print "Quiting Amity..."
         exit()
 
 
-if __name__ == "__main__":
+opt = docopt(__doc__, sys.argv[1:])
+
+if opt['--interactive']:
     app_header()
     amity = Amity()
     AmityCLI().cmdloop()
