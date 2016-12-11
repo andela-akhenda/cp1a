@@ -86,6 +86,10 @@ def app_header():
     cprint("\nNew to the system? Type 'help' to see a list of commands\n", 'white')
 
 
+def amity_print(arg):
+    cprint("\n" + arg + "\n", 'green')
+
+
 class AmityCLI(cmd.Cmd):
     '''
         This class create the AMity Command Line Interface for user interaction
@@ -101,44 +105,46 @@ class AmityCLI(cmd.Cmd):
             rooms_args.append('-ls')
         elif args['--of'] is True:
             rooms_args.append('-o')
-        print rooms_args
-        amity.create_room(rooms_args)
+        amity_print(amity.create_room(rooms_args))
 
     @docopt_cmd
     def do_add_person(self, args):
         """ Usage: add_person <first_name> <last_name> <job_type> <wants_accommodation> """
-        first_name = args['<first_name>']
-        last_name = args['<last_name>']
+        person_name = args['<first_name>'] + " " + args['<last_name>']
         role = args['<job_type>']
         boarding = args['<wants_accommodation>']
-        print first_name, last_name, role, boarding
-        amity.add_person(first_name + last_name, role, boarding)
+        amity_print(amity.add_person(person_name, role, boarding))
 
     @docopt_cmd
     def do_reallocate_person(self, args):
         """ Usage: reallocate_person <person_identifier> <new_room_name> """
-        print args['<person_identifier>'], args['<new_room_name>']
+        uuid = args['<person_identifier>']
+        room_name = args['<new_room_name>']
+        amity_print(amity.reallocate_person(uuid, room_name))
 
     @docopt_cmd
     def do_load_people(self, args):
         """ Usage: load_people <filename> """
-        print args['<filename>']
+        amity_print(amity.load_people(args['<filename>']))
 
     @docopt_cmd
     def do_print_allocations(self, args):
         """ Usage: print_allocations [--o=FILENAME] """
-        print args['--o']
-        amity.print_allocations(args['--o'])
+        amity_print(amity.print_allocations(args['--o']))
 
     @docopt_cmd
     def do_print_unallocated(self, args):
         """ Usage: print_unallocated [--o=FILENAME] """
-        print args['--o']
+        amity_print(amity.print_unallocated(args['--o']))
 
     @docopt_cmd
     def do_print_room(self, args):
         """ Usage: print_room <room_name> """
-        print args['<room_name>']
+        print "\n"
+        data = amity.print_room(args['<room_name>'].lower())
+        if type(data) is str:
+            amity_print(data)
+        print "\n"
 
     @docopt_cmd
     def do_save_state(self, args):

@@ -253,6 +253,8 @@ class Amity(object):
             type_of_reallocation = ''
             uuid = uuid.lower()
             r_id = room_name.lower()
+            all_offices = Room.rooms["Offices"]
+            all_living_spaces = Room.rooms["Living Spaces"]
             rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
             rooms = copy.deepcopy(rooms)
             for room in rooms:
@@ -268,10 +270,6 @@ class Amity(object):
                 if room in Room.rooms[type_of_reallocation]:
                     previous_room = room
             # Now, let's remove the user from the previous room
-            print previous_room
-            print Room.rooms[type_of_reallocation]
-            print Room.rooms[type_of_reallocation][previous_room]
-            print Room.rooms[type_of_reallocation][previous_room]['Occupants']
             Room.rooms[type_of_reallocation][previous_room]['Occupants'].remove(uuid)
             # Let's not forget to decrement the number of Total Persons
             Room.rooms[type_of_reallocation][previous_room]['Total Persons'] -= 1
@@ -489,8 +487,6 @@ class Amity(object):
             rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
             rooms = copy.deepcopy(rooms)
             if r_id in rooms.keys():
-                print "Before call: "
-                print Room.rooms
                 rooms[r_id]['Occupants'] = self.get_current_occupants(r_id)
                 room = rooms[r_id]
             else:

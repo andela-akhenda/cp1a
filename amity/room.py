@@ -50,14 +50,17 @@ class Room(object):
         room_key = room_type + "s"
         all_rooms = Room.rooms[room_key].keys()
         if len(all_rooms) == 0:
-            Room.error = "The system has no rooms. Please add rooms before adding persons."
+            Room.error = "The system has no "
+            Room.error += room_key + ". Please add a "
+            Room.error += room_type + " before adding a person."
             return Room.error
         available_rooms = []
         for room in all_rooms:
             if Room.rooms[room_key][room]['Total Persons'] < Room.rooms[room_key][room]['Capacity']:
                 available_rooms.append(room)
         if len(available_rooms) == 0:
-            Room.error = "There are currently no rooms available. All rooms are booked."
+            Room.error = "There are currently no"
+            Room.error += room_key + " available. All rooms are booked."
             return Room.error
         random_room = choice(available_rooms)
         Room.rooms[room_key][random_room]['Occupants'].append(uuid)
