@@ -1,5 +1,6 @@
 import os
 import sys
+import copy
 import sqlite3 as db
 
 from person import Person, Fellow, Staff
@@ -165,7 +166,7 @@ class Amity(object):
             #     return "No person was added to the system beacuse:" + msg
             if creation_errors and new_all_persons - all_persons >= 1:
                 for item in creation_errors:
-                    msg = msg + "\n - " + item
+                    msg = msg + "\n- " + item
                 return "The person has been added successfuly but with the following problem(s):" + msg
             else:
                 return "The " + role + " has been added successfuly"
@@ -214,11 +215,10 @@ class Amity(object):
         else:
             occupants = []
             occupants_dict = {}
-            all_offices = Room.rooms["Offices"]
-            all_living_spaces = Room.rooms["Living Spaces"]
-            all_rooms = dict(all_offices, **all_living_spaces)
-            if r_id in all_rooms.keys():
-                occupants = all_rooms[r_id]['Occupants']
+            rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
+            rooms = copy.deepcopy(rooms)
+            if r_id in rooms.keys():
+                occupants = rooms[r_id]['Occupants']
             for occupant in occupants:
                 occupants_dict[occupant] = Person.get_person(occupant)
             return occupants_dict
@@ -251,12 +251,12 @@ class Amity(object):
             current_rooms = []
             previous_room = ''
             type_of_reallocation = ''
+            uuid = uuid.lower()
             r_id = room_name.lower()
-            all_offices = Room.rooms["Offices"]
-            all_living_spaces = Room.rooms["Living Spaces"]
-            all_rooms = dict(all_offices, **all_living_spaces)
-            for room in all_rooms:
-                if uuid in all_rooms[room]['Occupants']:
+            rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
+            rooms = copy.deepcopy(rooms)
+            for room in rooms:
+                if uuid in rooms[room]['Occupants']:
                     current_rooms.append(room)
             if r_id in all_offices:
                 type_of_reallocation = "Offices"
@@ -268,6 +268,10 @@ class Amity(object):
                 if room in Room.rooms[type_of_reallocation]:
                     previous_room = room
             # Now, let's remove the user from the previous room
+            print previous_room
+            print Room.rooms[type_of_reallocation]
+            print Room.rooms[type_of_reallocation][previous_room]
+            print Room.rooms[type_of_reallocation][previous_room]['Occupants']
             Room.rooms[type_of_reallocation][previous_room]['Occupants'].remove(uuid)
             # Let's not forget to decrement the number of Total Persons
             Room.rooms[type_of_reallocation][previous_room]['Total Persons'] -= 1
@@ -296,7 +300,6 @@ class Amity(object):
         empty_rooms = {"Offices": [], "Living Spaces": []}
         all_offices = Room.rooms["Offices"]
         all_living_spaces = Room.rooms["Living Spaces"]
-        all_rooms = dict(all_offices, **all_living_spaces)
         for room, details in all_offices.iteritems():
             if details['Total Persons'] == 0 and len(details['Occupants']) == 0:
                 empty_rooms["Offices"].append(room)
@@ -484,9 +487,14 @@ class Amity(object):
         else:
             room = {}
             rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
+            rooms = copy.deepcopy(rooms)
             if r_id in rooms.keys():
+                print "Before call: "
+                print Room.rooms
                 rooms[r_id]['Occupants'] = self.get_current_occupants(r_id)
                 room = rooms[r_id]
+            else:
+                return "No room with the name " + r_id + " exists!"
             print room['Room Name'].upper()
             print "-" * 25
             for occupant in room['Occupants']:
