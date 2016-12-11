@@ -149,13 +149,13 @@ class AmityCLI(cmd.Cmd):
     @docopt_cmd
     def do_save_state(self, args):
         """ Usage: save_state [--db=sqlite_database] """
-        print args['--db']
-        # db_name = args['--db'] or 'amity.db'
+        amity_print(amity.save_state(args['--db']))
 
     @docopt_cmd
     def do_load_state(self, args):
         """ Usage: load_state <sqlite_database> """
         print args['<sqlite_database>']
+        amity_print(amity.save_state(args['<sqlite_database>']))
 
     def do_quit(self, args):
         """ Quits the interactive mode"""
