@@ -626,6 +626,7 @@ class Amity(object):
             output_dict[category] = {}
             cursor.execute("SELECT * from " + table)
             all_rows = cursor.fetchall()
+            print all_rows
             count = 0
             for row in all_rows:
                 if str(row[2]) == old_category and table == "Rooms":
@@ -648,6 +649,8 @@ class Amity(object):
                     count += 1
             output.append(output_dict)
             output.append(count)
+            print "Output of DB Looper: "
+            print output
             return output
 
         self.dbError = False

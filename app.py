@@ -154,8 +154,7 @@ class AmityCLI(cmd.Cmd):
     @docopt_cmd
     def do_load_state(self, args):
         """ Usage: load_state <sqlite_database> """
-        print args['<sqlite_database>']
-        amity_print(amity.save_state(args['<sqlite_database>']))
+        amity_print(amity.load_state(args['<sqlite_database>']))
 
     def do_quit(self, args):
         """ Quits the interactive mode"""
