@@ -6,15 +6,13 @@ from amity.amity import Amity
 from amity.room import Room, LivingSpace, Office
 from amity.person import Person, Fellow, Staff
 
-# sys.path.insert(0,os.path.abspath(__file__+"/../.."))
-# os.path.isfile = lambda path: path == '/tests/'
-
 
 class TestAmity(unittest.TestCase):
 
     def setUp(self):
         self.amity = Amity()
-        os.chdir(sys.path[0])
+        if not os.path.exists('data'):
+            os.chdir('tests')
 
     def test_amity_class_instance(self):
         self.assertIsInstance(self.amity, Amity)

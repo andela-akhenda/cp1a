@@ -1,6 +1,15 @@
 ==============================
+Without Offices
+==============================
+F1	JACK O'NEALL
+F2	RODNEY MCKAY
+S1	RONON DEX
+
+
+==============================
 Without Living Spaces
 ==============================
-F5(N)	JAFFA TEAL'C
+F1(N)	JACK O'NEALL
+F2(Y)	RODNEY MCKAY
 
 

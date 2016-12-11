@@ -7,10 +7,6 @@ from person import Person, Fellow, Staff
 from room import Room, Office, LivingSpace
 
 
-if not os.path.exists('data'):
-    os.chdir('amity')
-
-
 class Amity(object):
     ''' Amity Class
 
@@ -624,9 +620,12 @@ class Amity(object):
             if category != "Staff":
                 category += "s"
             output_dict[category] = {}
-            cursor.execute("SELECT * from " + table)
+            try:
+                cursor.execute("SELECT * from " + table)
+            except:
+                self.dbError = True
+                self.e_msg = "No such table exists. Please check your DB."
             all_rows = cursor.fetchall()
-            print all_rows
             count = 0
             for row in all_rows:
                 if str(row[2]) == old_category and table == "Rooms":
@@ -649,11 +648,10 @@ class Amity(object):
                     count += 1
             output.append(output_dict)
             output.append(count)
-            print "Output of DB Looper: "
-            print output
             return output
 
         self.dbError = False
+        self.e_msg = ""
         conn = db.connect('data/states/' + infile)
         with conn:
             print "Opened database successfully"
@@ -662,6 +660,8 @@ class Amity(object):
             living_spaces = db_looper('Rooms', 'Living Space')
             fellows = db_looper('Persons', 'Fellow')
             staff = db_looper('Persons', 'Staff')
+            if len(self.e_msg) > 0 and self.dbError:
+                return self.e_msg
             rooms = dict(offices[0], **living_spaces[0])
             persons = dict(fellows[0], **staff[0])
             total_rooms = offices[1] + living_spaces[1]
