@@ -537,7 +537,7 @@ class Amity(object):
                     self.add_person(person_name, person_role, person_allocate)
         return "People have been successfuly added to the system."
 
-    def save_state(self, outfile):
+    def save_state(self, outfile=None):
         """
         Persist State
 
@@ -566,6 +566,8 @@ class Amity(object):
                     cursor.execute('''INSERT INTO Persons (uuid, Name, Role, Boarding) VALUES(?, ?, ?, ?)''', (i['uuid'], i['Name'], i['Role'], i['Boarding']))
 
         self.dbError = False
+        if outfile is None:
+            outfile = 'latest.db'
         conn = db.connect('data/states/' + outfile)
         with conn:
             ''' With the 'with' keyword, the Python interpreter automatically
