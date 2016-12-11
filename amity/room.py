@@ -59,7 +59,7 @@ class Room(object):
             if Room.rooms[room_key][room]['Total Persons'] < Room.rooms[room_key][room]['Capacity']:
                 available_rooms.append(room)
         if len(available_rooms) == 0:
-            Room.error = "There are currently no"
+            Room.error = "There are currently no "
             Room.error += room_key + " available. All rooms are booked."
             return Room.error
         random_room = choice(available_rooms)

@@ -102,7 +102,7 @@ class TestAmity(unittest.TestCase):
         Room.rooms['Offices']['ruby']['Total Persons'] = 6
         response = self.office.add_person('f5', 'Fellows', 'Office', 'Y')
         self.assertIn(
-            "There are currently no rooms available.",
+            "There are currently no Offices available.",
             response
         )
 

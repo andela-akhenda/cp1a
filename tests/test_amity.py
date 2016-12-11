@@ -348,7 +348,7 @@ class TestAmity(unittest.TestCase):
     def test_response_on_no_rooms(self):
         response = self.amity.add_person("Samantha Carter", "Staff")
         self.assertIn(
-            "The system has no rooms",
+            "The system has no Offices",
             response
         )
 
@@ -411,7 +411,7 @@ class TestAmity(unittest.TestCase):
         self.amity.create_room(['Hive', '-ls'])
         response = self.amity.add_person('Tod Wraith', 'Staff')
         self.assertIn(
-            "The system has no rooms",
+            "The system has no Offices",
             response
         )
 
