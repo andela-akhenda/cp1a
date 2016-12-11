@@ -8,13 +8,14 @@ Usage:
     app.py add_person <first_name> <last_name> <job_type> <wants_accommodation>
     app.py reallocate_person <person_identifier> <new_room_name>
     app.py load_people <filename>
-    app.py print_allocations [-o=filename]
-    app.py print_unallocated [-o=filename]
+    app.py print_allocations [--o=FILENAME]
+    app.py print_unallocated [--o=FILENAME]
     app.py print_room <room_name>
     app.py save_state [--db=sqlite_database]
     app.py load_state <sqlite_database>
     app.py (-i | --interactive)
     app.py (-h | --help)
+    app.py (-v | --version)
     app.py quit
     quit
 Arguments
@@ -31,8 +32,8 @@ Options:
     -i --interactive        Interactive Mode
     -h --help               Show this screen and exit
     -ls --livingspace       Living Space Room
-    -of --office Office     Room type
-    -o filename             Specify filename
+    -of --office            Office Room type
+    -o FILENAME             Specify filename
     --db sqlite_databse     Name of SQLite Database
     -v --version
 """
@@ -101,6 +102,7 @@ class AmityCLI(cmd.Cmd):
         elif args['--of'] is True:
             rooms_args.append('-o')
         print rooms_args
+        amity.create_room(rooms_args)
 
     @docopt_cmd
     def do_add_person(self, args):
@@ -110,6 +112,7 @@ class AmityCLI(cmd.Cmd):
         role = args['<job_type>']
         boarding = args['<wants_accommodation>']
         print first_name, last_name, role, boarding
+        amity.add_person(first_name + last_name, role, boarding)
 
     @docopt_cmd
     def do_reallocate_person(self, args):
@@ -123,13 +126,14 @@ class AmityCLI(cmd.Cmd):
 
     @docopt_cmd
     def do_print_allocations(self, args):
-        """ Usage: print_allocations [-o=filename] """
-        print args['-o']
+        """ Usage: print_allocations [--o=FILENAME] """
+        print args['--o']
+        amity.print_allocations(args['--o'])
 
     @docopt_cmd
     def do_print_unallocated(self, args):
-        """ Usage: print_unallocated [-o=filename] """
-        print args['-o']
+        """ Usage: print_unallocated [--o=FILENAME] """
+        print args['--o']
 
     @docopt_cmd
     def do_print_room(self, args):
