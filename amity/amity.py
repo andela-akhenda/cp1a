@@ -1,8 +1,13 @@
 import os
+import sys
 import sqlite3 as db
 
 from person import Person, Fellow, Staff
 from room import Room, Office, LivingSpace
+
+
+if not os.path.exists('data'):
+    os.chdir('amity')
 
 
 class Amity(object):
@@ -347,7 +352,8 @@ class Amity(object):
                     print "\n"
                     if filename is not None and type(filename) is str:
                         with open('data/outputs/allocations/' + filename, 'a') as f:
-                            if misc_variable == 1: f.write(title_header)
+                            if misc_variable == 1:
+                                f.write(title_header)
                             output = room_details['Room Name'].upper()
                             output += "\n" + "-" * dashes + "\n"
                             output += ", ".join(all_members)
