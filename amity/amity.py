@@ -282,7 +282,7 @@ class Amity(object):
                 Room.rooms[type_of_reallocation][r_id]['Total Persons'] += 1
                 return "The person has been successfuly re-allocated to " + room_name
             elif Room.rooms[type_of_reallocation][r_id]['Total Persons'] == Room.rooms[type_of_reallocation][r_id]['Capacity']:
-                return room_name + " is fully booked. Try another room."
+                return room_name.capitalize() + " is fully booked. Try another room."
 
     @staticmethod
     def get_empty_rooms():
@@ -499,6 +499,8 @@ class Amity(object):
                 return "No room with the name " + r_id + " exists!"
             print room['Room Name'].upper()
             print "-" * 25
+            if len(room['Occupants']) == 0:
+                return r_id.capitalize() + " has no occupants"
             for occupant in room['Occupants']:
                 print room['Occupants'][occupant]['uuid'].upper() + "\t",
                 print room['Occupants'][occupant]['Boarding'].upper() + "\t",
@@ -632,7 +634,7 @@ class Amity(object):
             output_dict[category] = {}
             try:
                 cursor.execute("SELECT * from " + table)
-            except sqlite3.OperationalError:
+            except db.OperationalError:
                 self.dbError = True
                 self.e_msg = "No such table exists. Please check your DB."
             all_rows = cursor.fetchall()
