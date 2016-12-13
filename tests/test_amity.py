@@ -11,7 +11,7 @@ class TestAmity(unittest.TestCase):
 
     def setUp(self):
         self.amity = Amity()
-        if not os.path.exists('data'):
+        if os.path.exists('tests'):
             os.chdir('tests')
 
     def test_amity_class_instance(self):

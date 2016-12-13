@@ -5,6 +5,7 @@ import sqlite3 as db
 
 from person import Person, Fellow, Staff
 from room import Room, Office, LivingSpace
+from helpers import *
 
 if os.path.exists('amity'):
     os.chdir('amity')
@@ -189,38 +190,6 @@ class Amity(object):
 
         """
         return Person.get_person(uuid)
-
-    def get_current_occupants(self, r_id):
-        """
-        Get specific Room occupants.
-
-        This method fetches all the Persons in a particular room
-        given the room ID.
-
-        filenameeters
-        ----------
-        r_id : str
-            This is a string representing the id of the room.
-
-        Returns
-        -------
-        dict
-            This is a dictionary containing the details of
-            current occupants.
-
-        """
-        if not isinstance(r_id, str):
-            return TypeError("This method only accepts a string as the input.")
-        else:
-            occupants = []
-            occupants_dict = {}
-            rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
-            rooms = copy.deepcopy(rooms)
-            if r_id in rooms.keys():
-                occupants = rooms[r_id]['Occupants']
-            for occupant in occupants:
-                occupants_dict[occupant] = Person.get_person(occupant)
-            return occupants_dict
 
     def reallocate_person(self, uuid, room_name):
         """
@@ -486,7 +455,7 @@ class Amity(object):
             rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
             rooms = copy.deepcopy(rooms)
             if r_id in rooms.keys():
-                rooms[r_id]['Occupants'] = self.get_current_occupants(r_id)
+                rooms[r_id]['Occupants'] = get_current_occupants(r_id)
                 room = rooms[r_id]
             else:
                 return "No room with the name " + r_id + " exists!"
