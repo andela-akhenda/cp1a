@@ -42,7 +42,7 @@ class Amity(object):
     def __init__(self):
         pass
 
-    def create_room(self, name):
+    def create_room(name):
         """
         Create a room in Amity.
 
@@ -104,7 +104,7 @@ class Amity(object):
                 elif name[-1] == "-o":
                     return create_rooms_from_list(name[:-1])
 
-    def add_person(self, name, role, allocate="N"):
+    def add_person(name, role, allocate="N"):
         """
         Add Person and allocate random room.
 
@@ -171,7 +171,7 @@ class Amity(object):
             else:
                 return "The " + role + " has been added successfuly"
 
-    def get_person_details(self, uuid):
+    def get_person_details(uuid):
         """
         Get Person details.
 
@@ -306,7 +306,7 @@ class Amity(object):
                 empty_rooms["Living Spaces"].append(room)
         return empty_rooms
 
-    def print_allocations(self, filename=None):
+    def print_allocations(filename=None):
         """
         Print Room allocations.
 
