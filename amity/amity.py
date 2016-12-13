@@ -336,7 +336,7 @@ class Amity(object):
             title_header += " " * 9 + rooms_type + "\n"
             title_header += "=" * 30 + "\n\n"
             print title_header
-            for room, room_details in rooms[rooms_type].iteritems():
+            for room_details in rooms[rooms_type].itervalues():
                 if room_details['Total Persons'] > 0:
                     for uuid in room_details['Occupants']:
                         occupant = Person.get_person(uuid)
@@ -526,7 +526,7 @@ class Amity(object):
                 for person_details in f:
                     person_details = person_details.rstrip('\n')
                     person_list = person_details.split(" ")
-                    for i, item in enumerate(person_list):
+                    for i in range(len(person_list)):
                         person_list[i] = person_list[i].capitalize()
                     person_name = person_list[0] + " " + person_list[1]
                     person_role = person_list[2]
