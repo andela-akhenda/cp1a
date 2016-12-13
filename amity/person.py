@@ -58,9 +58,10 @@ class Fellow(Person):
     '''
 
     def __init__(self, name):
-        super(Fellow, self).__init__(
-            "f" + str(Person.number_of_fellows + 1), name, "Fellow"
-        )
+        # super(Fellow, self).__init__(
+        #     "f" + str(Person.number_of_fellows + 1), name, "Fellow"
+        # )
+        initializer(self, Fellow, name)
 
 
 class Staff(Person):
@@ -73,6 +74,17 @@ class Staff(Person):
     '''
 
     def __init__(self, name):
-        super(Staff, self).__init__(
-            "s" + str(Person.number_of_staff + 1), name, "Staff"
-        )
+        # super(Staff, self).__init__(
+        #     "s" + str(Person.number_of_staff + 1), name, "Staff"
+        # )
+        initializer(self, Staff, name)
+
+
+def initializer(this, role, name):
+    if role.__name__ == "Fellow":
+        number_of_persons = Person.number_of_fellows
+    else:
+        number_of_persons = Person.number_of_staff
+    super(role, this).__init__(
+        role.__name__[0].lower() + str(number_of_persons + 1), name, role.__name__
+    )

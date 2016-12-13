@@ -78,7 +78,7 @@ def app_header():
         launches
     '''
     os.system("clear")
-    print "\n\n"
+    print("\n\n")
     cprint(figlet_format('AMITY', font='roman'), 'green')
     cprint('------------------------------------------------------------------', 'magenta')
     cprint("A room allocation system for one of Andela's facilities, Amity.", 'yellow')

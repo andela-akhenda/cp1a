@@ -340,7 +340,7 @@ class Amity(object):
             title_header = "=" * 30 + "\n"
             title_header += " " * 9 + rooms_type + "\n"
             title_header += "=" * 30 + "\n\n"
-            print title_header
+            print(title_header)
             for room_details in rooms[rooms_type].itervalues():
                 if room_details['Total Persons'] > 0:
                     for uuid in room_details['Occupants']:
