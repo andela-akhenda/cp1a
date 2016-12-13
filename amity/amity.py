@@ -419,7 +419,7 @@ class Amity(object):
                 if title == "Living Spaces":
                     print "(" + person['Boarding'] + ")",
                 print "\t" + person['Name'].upper() + "\n"
-                if filename is not None and type(filename) is str:
+                if filename is not None and isinstance(filename, str):
                     with open('data/outputs/unallocations/' + filename, 'a') as f:
                         if misc_variable == 1:
                             f.write(title_header)
@@ -433,14 +433,14 @@ class Amity(object):
                         misc_variable = 0
             print "\n\n\n"
 
-        if filename is not None and type(filename) is str:
+        if filename is not None and isinstance(filename, str):
             try:
                 os.remove('data/outputs/unallocations/' + filename)
-            except OSError, IOError:
+            except OSError:
                 pass
         persons = dict(Person.persons["Fellows"], **Person.persons["Staff"])
         uuids = []
-        for person, person_details in persons.iteritems():
+        for person_details in persons.itervalues():
             uuids.append(person_details['uuid'])
 
         all_offices = Room.rooms["Offices"]
