@@ -6,6 +6,9 @@ import sqlite3 as db
 from person import Person, Fellow, Staff
 from room import Room, Office, LivingSpace
 
+if os.path.exists('amity'):
+    os.chdir('amity')
+
 
 class Amity(object):
     ''' Amity Class
