@@ -4,7 +4,6 @@ import sqlite3 as db
 
 from person import Person, Fellow, Staff
 from room import Room, Office, LivingSpace
-from helpers import *
 
 if os.path.exists('amity'):
     os.chdir('amity')
