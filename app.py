@@ -142,7 +142,7 @@ class AmityCLI(cmd.Cmd):
         """ Usage: print_room <room_name> """
         print "\n"
         data = amity.print_room(args['<room_name>'].lower())
-        if type(data) is str:
+        if not isinstance(data, str):
             amity_print(data)
         print "\n"
 

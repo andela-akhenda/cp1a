@@ -36,7 +36,7 @@ class Person(object):
         ''' This method is responsible for fetching all the
             Person's details.
         '''
-        if type(uuid) is not str:
+        if not isinstance(uuid, str):
             return TypeError("This method only accepts a string as the input.")
         else:
             all_fellows = Person.persons["Fellows"]

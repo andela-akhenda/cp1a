@@ -92,7 +92,7 @@ class Amity(object):
             else:
                 return "The room has been successfully created"
 
-        if type(name) is not list:
+        if not isinstance(name, list):
             return TypeError("This method only accepts a list as the input.")
         else:
             if name[-1] != "-ls" and name[-1] != "-o":
@@ -127,7 +127,7 @@ class Amity(object):
             This is a string showing success or failure of the operation.
 
         """
-        if type(name) is not str or type(role) is not str or type(allocate) is not str:
+        if not isinstance(name, str) or not isinstance(role, str) or not isinstance(allocate, str):
             return TypeError("This method only accepts strings as the input.")
         else:
             all_persons = Person.total_persons
@@ -209,7 +209,7 @@ class Amity(object):
             current occupants.
 
         """
-        if type(r_id) is not str:
+        if not isinstance(r_id, str):
             return TypeError("This method only accepts a string as the input.")
         else:
             occupants = []
@@ -244,7 +244,7 @@ class Amity(object):
             This is a string showing success or failure of the operation.
 
         """
-        if type(uuid) is not str or type(room_name) is not str:
+        if not isinstance(uuid, str) or not isinstance(room_name, str):
             return TypeError("This method only accepts strings as the input.")
         else:
             current_rooms = []
@@ -350,7 +350,7 @@ class Amity(object):
                     print "-" * dashes
                     print ", ".join(all_members)
                     print "\n"
-                    if filename is not None and type(filename) is str:
+                    if filename is not None and isinstance(filename, str):
                         with open('data/outputs/allocations/' + filename, 'a') as f:
                             if misc_variable == 1:
                                 f.write(title_header)
@@ -518,7 +518,7 @@ class Amity(object):
             a failure
 
         """
-        if type(infile) is not str:
+        if not isinstance(infile, str):
             return TypeError("This method only accepts a string as the input.")
         elif infile is not None:
             with open('data/inputs/' + infile, 'r') as f:
