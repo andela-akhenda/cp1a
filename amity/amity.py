@@ -490,17 +490,18 @@ class Amity(object):
             return TypeError("This method only accepts a string as the input.")
         else:
             room = {}
+            r_name = r_id.capitalize()
             rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
             rooms = copy.deepcopy(rooms)
             if r_id in rooms.keys():
                 rooms[r_id]['Occupants'] = self.get_current_occupants(r_id)
                 room = rooms[r_id]
             else:
-                return "No room with the name " + r_id + " exists!"
+                return "No room with the name '" + r_name + "' exists!"
             print room['Room Name'].upper()
             print "-" * 25
             if len(room['Occupants']) == 0:
-                return r_id.capitalize() + " has no occupants"
+                return r_name + " has no occupants"
             for occupant in room['Occupants']:
                 print room['Occupants'][occupant]['uuid'].upper() + "\t",
                 print room['Occupants'][occupant]['Boarding'].upper() + "\t",
@@ -574,8 +575,8 @@ class Amity(object):
                     cursor.execute('''INSERT INTO Persons (uuid, Name, Role, Boarding) VALUES(?, ?, ?, ?)''', (i['uuid'], i['Name'], i['Role'], i['Boarding']))
 
         self.dbError = False
-        if outfile is None:
-            outfile = 'latest.db'
+        # if outfile is None:
+        #     outfile = 'latest.db'
         conn = db.connect('data/states/' + outfile)
         with conn:
             # With the 'with' keyword, the Python interpreter automatically

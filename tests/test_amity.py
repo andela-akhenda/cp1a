@@ -584,7 +584,23 @@ class TestAmity(unittest.TestCase):
                 }
             }
         )
+        self.assertEqual(
+            self.amity.print_room('daedalus'),
+            "No room with the name 'Daedalus' exists!"
+        )
         self.assertRaises(TypeError, self.amity.print_room(123))
+
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {},
+                "Living Spaces": {}
+                })
+    def test_print_empty_room(self):
+        self.amity.create_room(['Daedalus', '-ls'])
+        response = self.amity.print_room('daedalus')
+        self.assertEqual(
+            response,
+            "Daedalus has no occupants"
+        )
 
     # TODO: Add file usage Mock here
     @patch.dict('amity.room.Room.rooms', {
@@ -672,6 +688,12 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(
             self.amity.load_state("load_test.db"),
             "You have successfuly loaded a previously saved state."
+        )
+
+    def test_load_state_from_non_conforming_db(self):
+        self.assertEqual(
+            self.amity.load_state("non_conforming.db"),
+            "No such table exists. Please check your DB."
         )
 
 

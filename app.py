@@ -150,6 +150,8 @@ class AmityCLI(cmd.Cmd):
     @docopt_cmd
     def do_save_state(self, args):
         """ Usage: save_state [--db=sqlite_database] """
+        if not args['--db']:
+            args['--db'] = 'latest.db'
         amity_print(amity.save_state(args['--db']))
 
     @docopt_cmd
