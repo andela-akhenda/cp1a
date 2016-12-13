@@ -23,6 +23,7 @@ class TestAmity(unittest.TestCase):
         colonel = Fellow("Samantha")
         self.assertEqual(jaffar.name, "Teal'c")
         self.assertEqual(runner.name, "Ronon")
+        self.assertEqual(colonel.name, "Samantha")
         self.assertEqual(len(Person.persons['Staff'].keys()), 1)
         self.assertEqual(len(Person.persons['Fellows'].keys()), 2)
 
@@ -39,9 +40,9 @@ class TestAmity(unittest.TestCase):
     @patch.object(Person, "total_persons", 0)
     @patch.object(Person, "error", "")
     def test_number_of_persons_increment_after_addition(self):
-        jaffar = Staff("Teal'c")
-        runner = Fellow("Ronon")
-        colonel = Fellow("Samantha")
+        Staff("Teal'c")
+        Fellow("Ronon")
+        Fellow("Samantha")
         self.assertEqual(Person.number_of_fellows, 2)
         self.assertEqual(Person.number_of_staff, 1)
         self.assertEqual(Person.total_persons, 3)

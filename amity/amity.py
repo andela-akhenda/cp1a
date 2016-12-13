@@ -1,5 +1,4 @@
 import os
-import sys
 import copy
 import sqlite3 as db
 
@@ -374,7 +373,7 @@ class Amity(object):
         if filename is not None and type(filename) is str:
             try:
                 os.remove('data/outputs/allocations/' + filename)
-            except OSError, IOError:
+            except OSError:
                 pass
         all_offices["Offices"] = Room.rooms["Offices"]
         all_living_spaces["Living Spaces"] = Room.rooms["Living Spaces"]
@@ -446,14 +445,14 @@ class Amity(object):
 
         all_offices = Room.rooms["Offices"]
         ids_in_offices = []
-        for room, room_details in all_offices.iteritems():
+        for room_details in all_offices.itervalues():
             for occupant in room_details['Occupants']:
                 ids_in_offices.append(occupant)
         unallocated_o = [uuid for uuid in uuids if uuid not in ids_in_offices]
 
         all_living_spaces = Room.rooms["Living Spaces"]
         ids_in_ls = []
-        for room, room_details in all_living_spaces.iteritems():
+        for room_details in all_living_spaces.itervalues():
             for occupant in room_details['Occupants']:
                 ids_in_ls.append(occupant)
         temp_unallocated_ls = [uuid for uuid in uuids if uuid not in ids_in_ls]
@@ -578,10 +577,10 @@ class Amity(object):
             outfile = 'latest.db'
         conn = db.connect('data/states/' + outfile)
         with conn:
-            ''' With the 'with' keyword, the Python interpreter automatically
-            releases the resources. It also provides error handling. Using the
-            with keyword, the changes are automatically committed. Otherwise,
-            we would have to commit them manually. '''
+            # With the 'with' keyword, the Python interpreter automatically
+            # releases the resources. It also provides error handling. Using the
+            # with keyword, the changes are automatically committed. Otherwise,
+            # we would have to commit them manually.
             print "Opened database successfully"
             cursor = conn.cursor()
             cursor.executescript('''
@@ -634,7 +633,7 @@ class Amity(object):
             output_dict[category] = {}
             try:
                 cursor.execute("SELECT * from " + table)
-            except:
+            except sqlite3.OperationalError:
                 self.dbError = True
                 self.e_msg = "No such table exists. Please check your DB."
             all_rows = cursor.fetchall()

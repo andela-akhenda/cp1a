@@ -1,10 +1,9 @@
-import sys
-import os.path
+import os
 import unittest
 from mock import patch
 from amity.amity import Amity
-from amity.room import Room, LivingSpace, Office
-from amity.person import Person, Fellow, Staff
+from amity.room import Room
+from amity.person import Person
 
 
 class TestAmity(unittest.TestCase):
