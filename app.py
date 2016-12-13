@@ -156,8 +156,8 @@ class AmityCLI(cmd.Cmd):
         """ Usage: load_state <sqlite_database> """
         amity_print(amity.load_state(args['<sqlite_database>']))
 
-    def do_quit(args):
-        """ Quits the interactive mode"""
+    def do_quit():
+        """ Quits the interactive mode """
         print "Goodbye!"
         print "Quiting Amity..."
         exit()

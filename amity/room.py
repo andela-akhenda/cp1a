@@ -73,7 +73,7 @@ class Room(object):
 
         # Uncomment the above lines if the import from DB messes the Total
         # Persons field. Remember to also delete the line below.
-        
+
         Room.rooms[room_key][random_room]['Total Persons'] += 1
         Room.error = ""
 

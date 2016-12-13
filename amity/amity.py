@@ -370,7 +370,7 @@ class Amity(object):
                     all_members = []
             print "\n\n\n"
 
-        if filename is not None and type(filename) is str:
+        if filename is not None and isinstance(filename, str):
             try:
                 os.remove('data/outputs/allocations/' + filename)
             except OSError:
@@ -487,7 +487,7 @@ class Amity(object):
             Room.
 
         """
-        if type(r_id) is not str:
+        if not isinstance(r_id, str):
             return TypeError("This method only accepts a string as the input.")
         else:
             room = {}
@@ -533,8 +533,8 @@ class Amity(object):
                 for person_details in f:
                     person_details = person_details.rstrip('\n')
                     person_list = person_details.split(" ")
-                    for i in range(len(person_list)):
-                        person_list[i] = person_list[i].capitalize()
+                    for i, item in enumerate(person_list):
+                        person_list[i] = item.capitalize()
                     person_name = person_list[0] + " " + person_list[1]
                     person_role = person_list[2]
                     if len(person_list) > 3:
