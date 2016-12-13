@@ -570,9 +570,12 @@ class Amity(object):
             for item in items:
                 i = items[item]
                 if category == "Office" or category == "Living Space":
-                    cursor.execute('''INSERT INTO Rooms (Id, Name, Type, Capacity, 'Total Persons', Occupants) VALUES(?, ?, ?, ?, ?, ?)''', (i['Room ID'], i['Room Name'], category, i['Capacity'], i['Total Persons'], ', '.join(i['Occupants'])))
+                    cursor.execute('''INSERT INTO Rooms (Id, Name, Type, \
+                        Capacity, 'Total Persons', Occupants) VALUES(?, ?, ?,\
+                        ?, ?, ?)''', (i['Room ID'], i['Room Name'], category, i['Capacity'], i['Total Persons'], ', '.join(i['Occupants'])))
                 elif category == "Fellow" or category == "Staff":
-                    cursor.execute('''INSERT INTO Persons (uuid, Name, Role, Boarding) VALUES(?, ?, ?, ?)''', (i['uuid'], i['Name'], i['Role'], i['Boarding']))
+                    cursor.execute('''INSERT INTO Persons (uuid, Name, Role,\
+                        Boarding) VALUES(?, ?, ?, ?)''', (i['uuid'], i['Name'], i['Role'], i['Boarding']))
 
         self.dbError = False
         # if outfile is None:
