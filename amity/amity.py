@@ -42,6 +42,7 @@ class Amity(object):
     def __init__(self):
         pass
 
+    @staticmethod
     def create_room(name):
         """
         Create a room in Amity.
@@ -104,6 +105,7 @@ class Amity(object):
                 elif name[-1] == "-o":
                     return create_rooms_from_list(name[:-1])
 
+    @staticmethod
     def add_person(name, role, allocate="N"):
         """
         Add Person and allocate random room.
@@ -171,6 +173,7 @@ class Amity(object):
             else:
                 return "The " + role + " has been added successfuly"
 
+    @staticmethod
     def get_person_details(uuid):
         """
         Get Person details.
@@ -191,6 +194,7 @@ class Amity(object):
         """
         return Person.get_person(uuid)
 
+    @staticmethod
     def get_current_occupants(r_id):
         """
         Get specific Room occupants.
@@ -223,6 +227,7 @@ class Amity(object):
                 occupants_dict[occupant] = Person.get_person(occupant)
             return occupants_dict
 
+    @staticmethod
     def reallocate_person(uuid, room_name):
         """
         Reallocate a Person.
@@ -281,6 +286,7 @@ class Amity(object):
             elif Room.rooms[type_of_reallocation][r_id]['Total Persons'] == Room.rooms[type_of_reallocation][r_id]['Capacity']:
                 return room_name + " is fully booked. Try another room."
 
+    @staticmethod
     def get_empty_rooms():
         """
         Get all empty room in the system.
@@ -306,6 +312,7 @@ class Amity(object):
                 empty_rooms["Living Spaces"].append(room)
         return empty_rooms
 
+    @staticmethod
     def print_allocations(filename=None):
         """
         Print Room allocations.
@@ -380,6 +387,7 @@ class Amity(object):
         else:
             return "Successfuly printed the allocations"
 
+    @staticmethod
     def print_unallocated(filename=None):
         """
         Print Room Unallocations.
@@ -487,7 +495,7 @@ class Amity(object):
             rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
             rooms = copy.deepcopy(rooms)
             if r_id in rooms.keys():
-                rooms[r_id]['Occupants'] = get_current_occupants(r_id)
+                rooms[r_id]['Occupants'] = self.get_current_occupants(r_id)
                 room = rooms[r_id]
             else:
                 return "No room with the name " + r_id + " exists!"
