@@ -86,5 +86,7 @@ def initializer(this, role, name):
     else:
         number_of_persons = Person.number_of_staff
     super(role, this).__init__(
-        role.__name__[0].lower() + str(number_of_persons + 1), name, role.__name__
+        role.__name__[0].lower() + str(number_of_persons + 1),
+        name,
+        role.__name__
     )

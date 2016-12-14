@@ -33,7 +33,7 @@ Options:
     -h --help               Show this screen and exit
     -ls --livingspace       Living Space Room
     -of --office            Office Room type
-    -o FILENAME             Specify filename
+    --o FILENAME             Specify filename
     --db sqlite_databse     Name of SQLite Database
     -v --version
 """
@@ -86,8 +86,9 @@ def app_header():
     cprint("\nNew to the system? Type 'help' to see a list of commands\n", 'white')
 
 
-def amity_print(arg):
-    cprint("\n" + arg + "\n", 'green')
+def amity_print(arg, color='green'):
+    ''' This is a simple print function that adds color to printed output. '''
+    cprint("\n" + arg + "\n", color)
 
 
 class AmityCLI(cmd.Cmd):
@@ -111,7 +112,8 @@ class AmityCLI(cmd.Cmd):
         Usage: create_room <room_name>... [--ls | --of]
         """
         rooms_args = []
-        rooms_args = args['<room_name>']
+        for room in args['<room_name>']:
+            rooms_args.append(room.capitalize())
         if args['--ls'] is True:
             rooms_args.append('-ls')
         elif args['--of'] is True:
@@ -120,38 +122,115 @@ class AmityCLI(cmd.Cmd):
 
     @docopt_cmd
     def do_add_person(self, args):
-        """ Usage: add_person <first_name> <last_name> <job_type> [<wants_accommodation>] """
+        """
+        This command adds a person and allocates them a random room in Amity.
+
+        The <job_type> argument specifies the role of the person being added
+        which can either be 'Fellow' or 'Staff'.
+
+        The <wants_accommodation> argument tells the system whether or not the
+        person being added wants a room or not. It only accepts 'Y' or 'N'
+        characters which stand for 'Yes' or 'No' respectively. It is an
+        optional argument and its default value is 'N'.
+
+        Usage: add_person <first_name> <last_name> <job_type> [<wants_accommodation>]
+        """
         person_name = args['<first_name>'].capitalize()
         person_name += " " + args['<last_name>'].capitalize()
         role = args['<job_type>'].capitalize()
-        boarding = args['<wants_accommodation>'].upper()
+        if role != 'Fellow' and role != 'Staff':
+            amity_print("Please check your arguments."\
+                        "\n- <job_type> can either be 'Fellow' or 'Staff' "\
+                        "only.\n- Type 'help add_person' for more information",
+                        'red')
+            return
+        boarding = args['<wants_accommodation>'] or 'N'
+        boarding = boarding.upper()
+        if boarding != 'Y' and boarding != 'N':
+            amity_print("Please check your arguments."\
+                        "\n- <wants_accommodation> can either be 'Y' or "\
+                        "'N' only.\n- Type 'help add_person' for "\
+                        "more information", 'red')
+            return
         amity_print(amity.add_person(person_name, role, boarding))
 
     @docopt_cmd
     def do_reallocate_person(self, args):
-        """ Usage: reallocate_person <person_identifier> <new_room_name> """
+        """
+        This command reallocates a person to another room.
+
+        It takes thes person's UUID which can be gotten from the list of
+        allocations when print_allocations is run so it is highly recommended
+        that you first get the person's UUID from the print_allocations
+        command.
+
+        The second argument it takes is the name of the room to which you want
+        to allocate the person to.
+
+        Usage: reallocate_person <person_identifier> <new_room_name>
+        """
         uuid = args['<person_identifier>'].lower()
         room_name = args['<new_room_name>']
         amity_print(amity.reallocate_person(uuid, room_name))
 
     @docopt_cmd
     def do_load_people(self, args):
-        """ Usage: load_people <filename> """
+        """
+        This commands loads people to the Amity System from a text file.
+
+        It simply takes the name of the file to load a list of people from as
+        the argument.
+
+        NB: All input files are located in the 'data/inputs' directory.
+
+        Usage: load_people <filename>
+        """
         amity_print(amity.load_people(args['<filename>']))
 
     @docopt_cmd
     def do_print_allocations(self, args):
-        """ Usage: print_allocations [--o=FILENAME] """
+        """
+        This commands prints all of Amity's allocation to the screen and also
+        saves the printout to a text file if provided with a file name.
+
+        It simply takes the name of the file to save the allocations printout
+        as an option argument after '--o='. This argument is optional. If not
+        provided, the printout will not be saved to a file.
+
+        NB: All allocations files are saved in the 'data/outputs/allocations'
+            directory.
+
+        Usage: print_allocations [--o=FILENAME]
+        """
         amity_print(amity.print_allocations(args['--o']))
 
     @docopt_cmd
     def do_print_unallocated(self, args):
-        """ Usage: print_unallocated [--o=FILENAME] """
+        """
+        This commands prints all of Amity's unallocated people to the screen
+        and also saves the printout to a text file if provided with a filename.
+
+        It simply takes the name of the file to save the unallocated persons
+        printout as an option argument after '--o='. This argument is optional.
+        If not provided, the printout will not be saved to a file.
+
+        NB: All unallocated persons files are saved in the
+            'data/outputs/unallocations' directory.
+
+        Usage: print_unallocated [--o=FILENAME]
+        """
         amity_print(amity.print_unallocated(args['--o']))
 
     @docopt_cmd
     def do_print_room(self, args):
-        """ Usage: print_room <room_name> """
+        """
+        This commands prints room details.
+
+        It accepts a room name then queries Amity System and returns
+        information about the room given.
+
+        Usage: print_room <room_name>
+        """
         print "\n"
         data = amity.print_room(args['<room_name>'].lower())
         if isinstance(data, str):
@@ -160,14 +239,37 @@ class AmityCLI(cmd.Cmd):
 
     @docopt_cmd
     def do_save_state(self, args):
-        """ Usage: save_state [--db=sqlite_database] """
+        """
+        This command persists the current state of the system to an SQLite
+        Database.
+
+        It takes an option '--db=' which specifies the name to give the
+        database file which we will use to save the state of the applicaion.
+
+        NB: All DB files are saved in the 'data/states' directory.
+
+        Usage: save_state [--db=sqlite_database]
+        """
         if not args['--db']:
             args['--db'] = 'latest.db'
         amity_print(amity.save_state(args['--db']))
 
     @docopt_cmd
     def do_load_state(self, args):
-        """ Usage: load_state <sqlite_database> """
+        """
+        This command loads a previously saved state from an SQLite database to
+        the Amity System.
+
+        It takes an argument, <sqlite_database> which specifies the name of the
+        SQLite database file to load the state from. This argument is optional.
+        If no argument is provided, latest.db will be loaded.
+
+        NB: All DB files are loaded from the 'data/states' directory.
+
+        Usage: load_state <sqlite_database>
+        """
+        if not args['<sqlite_database>']:
+            args['<sqlite_database>'] = 'latest.db'
         amity_print(amity.load_state(args['<sqlite_database>']))
 
     def do_quit(self, args):
