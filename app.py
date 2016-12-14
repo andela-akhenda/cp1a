@@ -5,7 +5,7 @@ Welcome to Amity.
 Amity is a room allocation system for one of Andela's facilities called Amity.
 Usage:
     app.py create_room <room_name>... [--ls | --of]
-    app.py add_person <first_name> <last_name> <job_type> <wants_accommodation>
+    app.py add_person <first_name> <last_name> <job_type> [<wants_accommodation>]
     app.py reallocate_person <person_identifier> <new_room_name>
     app.py load_people <filename>
     app.py print_allocations [--o=FILENAME]
@@ -99,7 +99,18 @@ class AmityCLI(cmd.Cmd):
 
     @docopt_cmd
     def do_create_room(self, args):
-        """ Usage: create_room <room_name>... [--ls | --of] """
+        """
+        This command creates rooms in Amity.
+
+        You can create multiple rooms by specifying multiple room names
+        after the create_room command. By default, this method will create an
+        office/offices unless '--ls' is specified after the room name or list
+        of room names. The '--of' option can be specified but it's not
+        necessary.
+
+        Usage: create_room <room_name>... [--ls | --of]
+        """
+        rooms_args = []
         rooms_args = args['<room_name>']
         if args['--ls'] is True:
             rooms_args.append('-ls')
@@ -109,7 +120,7 @@ class AmityCLI(cmd.Cmd):
 
     @docopt_cmd
     def do_add_person(self, args):
-        """ Usage: add_person <first_name> <last_name> <job_type> <wants_accommodation> """
+        """ Usage: add_person <first_name> <last_name> <job_type> [<wants_accommodation>] """
         person_name = args['<first_name>'].capitalize()
         person_name += " " + args['<last_name>'].capitalize()
         role = args['<job_type>'].capitalize()

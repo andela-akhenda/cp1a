@@ -26,10 +26,10 @@ class TestAmity(unittest.TestCase):
                 })
     def test_create_room(self):
         response = self.amity.create_room(['Abydos'])
-        self.assertEqual(response, "The room has been successfully created")
+        self.assertEqual(response, "The Office has been successfully created")
         self.assertEqual(
             self.amity.create_room(['Daedalus', '-o']),
-            "The room has been successfully created"
+            "The Office has been successfully created"
         )
 
     @patch.dict('amity.room.Room.rooms', {
@@ -127,7 +127,7 @@ class TestAmity(unittest.TestCase):
         response = self.amity.create_room(['Abydos', 'Chulak', 'Argos'])
         self.assertEqual(
             response,
-            "Your 3 rooms have been successfully created"
+            "Your 3 Offices have been successfully created"
         )
 
     @patch.dict('amity.room.Room.rooms', {
@@ -148,13 +148,13 @@ class TestAmity(unittest.TestCase):
             "A room named 'Dakara' already exists. Please choose another name.",
             response
         )
-        self.assertIn("Only 1 room has been successfully created", response)
+        self.assertIn("Only 1 Living Space has been successfully created", response)
         self.assertIn(
             "No room was created",
             self.amity.create_room(['Dakara', 'Chulak', '-ls'])
         )
         self.assertIn(
-            "Only 2 rooms have been successfully created",
+            "Only 2 Living Spaces have been successfully created",
             self.amity.create_room(['Dakara', 'Argos', 'Hive', '-ls'])
         )
 

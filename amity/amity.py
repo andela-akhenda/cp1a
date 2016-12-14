@@ -67,6 +67,10 @@ class Amity(object):
             all_rooms = Room.total_rooms
             creation_errors = []
             msg = ''
+            if room_type == 'o':
+                room_type_str = 'Office'
+            elif room_type == 'ls':
+                room_type_str = 'Living Space'
             for name in names_list:
                 if room_type == "ls":
                     LivingSpace(name)
@@ -83,14 +87,14 @@ class Amity(object):
                 for item in creation_errors:
                     msg = msg + "\n" + item
                 if new_all_rooms - all_rooms == 1:
-                    msg2 = ' room has been'
+                    msg2 = ' ' + room_type_str + ' has been'
                 elif new_all_rooms - all_rooms > 1:
-                    msg2 = ' rooms have been'
+                    msg2 = ' ' + room_type_str + 's have been'
                 return "Only " + str(new_all_rooms - all_rooms) + msg2 + " successfully created because:" + msg
             elif new_all_rooms - all_rooms > 1:
-                return "Your " + str(new_all_rooms - all_rooms) + " rooms have been successfully created"
+                return "Your " + str(new_all_rooms - all_rooms) + " " + room_type_str + "s have been successfully created"
             else:
-                return "The room has been successfully created"
+                return "The " + room_type_str + " has been successfully created"
 
         if not isinstance(name, list):
             return TypeError("This method only accepts a list as the input.")
