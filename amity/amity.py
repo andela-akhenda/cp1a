@@ -267,6 +267,8 @@ class Amity(object):
             for room in rooms:
                 if uuid in rooms[room]['Occupants']:
                     current_rooms.append(room)
+                else:
+                    return "The given UUID does not exist!"
             if r_id in all_offices:
                 type_of_reallocation = "Offices"
             elif r_id in all_living_spaces:
