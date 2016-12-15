@@ -263,12 +263,13 @@ class Amity(object):
             all_offices = Room.rooms["Offices"]
             all_living_spaces = Room.rooms["Living Spaces"]
             rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
+            persons = dict(Person.persons["Fellows"], **Person.persons["Staff"])
             rooms = copy.deepcopy(rooms)
+            if uuid not in persons.keys():
+                return "The given UUID does not exist!"
             for room in rooms:
                 if uuid in rooms[room]['Occupants']:
                     current_rooms.append(room)
-                else:
-                    return "The given UUID does not exist!"
             if r_id in all_offices:
                 type_of_reallocation = "Offices"
             elif r_id in all_living_spaces:
@@ -537,19 +538,24 @@ class Amity(object):
         if not isinstance(infile, str):
             return TypeError("This method only accepts a string as the input.")
         elif infile is not None:
-            with open('data/inputs/' + infile, 'r') as f:
-                for person_details in f:
-                    person_details = person_details.rstrip('\n')
-                    person_list = person_details.split(" ")
-                    for i, item in enumerate(person_list):
-                        person_list[i] = item.capitalize()
-                    person_name = person_list[0] + " " + person_list[1]
-                    person_role = person_list[2]
-                    if len(person_list) > 3:
-                        person_allocate = person_list[3]
-                    else:
-                        person_allocate = "N"
-                    self.add_person(person_name, person_role, person_allocate)
+            if os.path.exists('data/inputs/' + infile):
+                with open('data/inputs/' + infile, 'r') as f:
+                    for person_details in f:
+                        person_details = person_details.rstrip('\n')
+                        person_list = person_details.split(" ")
+                        for i, item in enumerate(person_list):
+                            person_list[i] = item.capitalize()
+                        person_name = person_list[0] + " " + person_list[1]
+                        person_role = person_list[2]
+                        if len(person_list) > 3:
+                            person_allocate = person_list[3]
+                        else:
+                            person_allocate = "N"
+                        self.add_person(person_name, person_role, person_allocate)
+            else:
+                return "The given file does not exist. \nPlease make sure "\
+                        "'" + infile + "' is a valid filename and it exists "\
+                        "in the 'data/inputs' directory"
         return "People have been successfuly added to the system."
 
     def save_state(self, outfile=None):
@@ -646,7 +652,7 @@ class Amity(object):
                 cursor.execute("SELECT * from " + table)
             except db.OperationalError:
                 self.dbError = True
-                self.e_msg = "No such table exists. Please check your DB."
+                self.e_msg = "No such table exists. Please check that you loaded the correct DB."
             all_rows = cursor.fetchall()
             count = 0
             for row in all_rows:

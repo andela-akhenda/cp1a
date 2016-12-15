@@ -197,7 +197,7 @@ class TestAmity(unittest.TestCase):
                         "Room Name": "Daedalus",
                         "Room ID": "daedalus",
                         "Capacity": 4,
-                        "Total Persons": 0,
+                        "Total Persons": 1,
                         "Occupants": ['f5']
                     }
                 }
@@ -693,7 +693,7 @@ class TestAmity(unittest.TestCase):
     def test_load_state_from_non_conforming_db(self):
         self.assertEqual(
             self.amity.load_state("non_conforming.db"),
-            "No such table exists. Please check your DB."
+            "No such table exists. Please check that you loaded the correct DB."
         )
 
 
