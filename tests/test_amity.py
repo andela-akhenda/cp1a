@@ -688,9 +688,9 @@ class TestAmity(unittest.TestCase):
                 })
     def test_save_state(self):
         # os.chdir(sys.path[0] + '/tests')
-        self.assertEqual(
-            self.amity.save_state("test.db"),
-            "You have successfuly persisted the state of the Application."
+        self.assertIn(
+            "You have successfuly persisted the state of the Application.",
+            self.amity.save_state("test.db")
         )
 
     # TODO: Add DB usage Mock here
@@ -703,9 +703,9 @@ class TestAmity(unittest.TestCase):
     @patch.object(Room, "number_of_living_spaces", 0)
     @patch.object(Room, "total_rooms", 0)
     def test_load_state(self):
-        self.assertEqual(
-            self.amity.load_state("load_test.db"),
-            "You have successfuly loaded a previously saved state."
+        self.assertIn(
+            "You have successfuly loaded a previously saved state.",
+            self.amity.load_state("load_test.db")
         )
 
     def test_load_state_from_non_conforming_db(self):

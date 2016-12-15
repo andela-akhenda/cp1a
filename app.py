@@ -12,7 +12,7 @@ Usage:
     app.py print_unallocated [--o=FILENAME]
     app.py print_room <room_name>
     app.py save_state [--db=sqlite_database]
-    app.py load_state <sqlite_database>
+    app.py load_state [<sqlite_database>]
     app.py (-i | --interactive)
     app.py (-h | --help)
     app.py (-v | --version)
@@ -226,7 +226,7 @@ class AmityCLI(cmd.Cmd):
         """
         This commands prints room details.
 
-        It accepts a room name then queries Amity System and returns
+        It accepts a room name then querries Amity System and returns
         information about the room given.
 
         Usage: print_room <room_name>
@@ -245,6 +245,7 @@ class AmityCLI(cmd.Cmd):
 
         It takes an option '--db=' which specifies the name to give the
         database file which we will use to save the state of the applicaion.
+        If no DB name is given, the state is saved in a file named 'latest.db'
 
         NB: All DB files are saved in the 'data/states' directory.
 
@@ -262,15 +263,26 @@ class AmityCLI(cmd.Cmd):
 
         It takes an argument, <sqlite_database> which specifies the name of the
         SQLite database file to load the state from. This argument is optional.
-        If no argument is provided, latest.db will be loaded.
+        If no argument is provided, 'latest.db' will be loaded.
 
         NB: All DB files are loaded from the 'data/states' directory.
 
-        Usage: load_state <sqlite_database>
+        Usage: load_state [<sqlite_database>]
         """
         if not args['<sqlite_database>']:
             args['<sqlite_database>'] = 'latest.db'
-        amity_print(amity.load_state(args['<sqlite_database>']))
+        if len(amity.current_state) == 0:
+            amity.current_state = args['<sqlite_database>'][:-3]
+            amity_print(amity.load_state(args['<sqlite_database>']))
+        else:
+            e = "You have already loaded a state.\n"
+            e += "Your current state is the '"
+            e += amity.current_state
+            e += "' DB in the 'data/states' directory.\n"
+            e += "You cannot load another state while in this session.\n"
+            e += "To load another state restart the application "
+            e += "to start a new session."
+            amity_print(e, 'red')
 
     def do_quit(self, args):
         """ Quits the interactive mode """

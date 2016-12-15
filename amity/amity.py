@@ -38,7 +38,7 @@ class Amity(object):
     room_allocations = {}
 
     def __init__(self):
-        pass
+        self.current_state = ''
 
     @staticmethod
     def create_room(name):
@@ -619,7 +619,11 @@ class Amity(object):
             db_looper(persons["Fellows"], 'Fellow')
             db_looper(persons["Staff"], 'Staff')
             if not self.dbError:
-                return "You have successfuly persisted the state of the Application."
+                return_msg = "You have successfuly persisted the state of the"
+                return_msg += " Application."
+                return_msg += "\nThe state was saved to '" + outfile + "' file"
+                return_msg += " in the 'data/states' directory."
+                return return_msg
 
     def load_state(self, infile):
         """
@@ -704,7 +708,11 @@ class Amity(object):
             Person.number_of_staff = staff[1]
             print "Operation done successfully"
             if not self.dbError:
-                return "You have successfuly loaded a previously saved state."
+                return_msg = "You have successfuly loaded a previously saved "
+                return_msg += "state.\n"
+                return_msg += "The state was loaded from '" + infile + "' file"
+                return_msg += " in the 'data/states' directory."
+                return return_msg
 
 
 
