@@ -293,6 +293,21 @@ class TestAmity(unittest.TestCase):
         )
 
     @patch.dict('amity.room.Room.rooms', {
+                "Offices": {},
+                "Living Spaces": {}
+                })
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {},
+                "Staff": {}
+                })
+    def test_reallocate_non_existent_uuid(self):
+        response = self.amity.reallocate_person('d1', 'Dakara')
+        self.assertEqual(
+            response,
+            "The given UUID does not exist!"
+        )
+
+    @patch.dict('amity.room.Room.rooms', {
                 "Offices": {
                     "abydos": {
                         "Room Name": "Abydos",
@@ -616,9 +631,12 @@ class TestAmity(unittest.TestCase):
     @patch.object(Person, "total_persons", 0)
     def test_load_people_from_file(self):
         # os.chdir(sys.path[0] + '/tests')
-        response = self.amity.load_people('test_people.txt')
+        self.assertIn(
+            "The given file does not exist.",
+            self.amity.load_people('no_file.txt')
+        )
         self.assertEqual(
-            response,
+            self.amity.load_people('test_people.txt'),
             "People have been successfuly added to the system."
         )
         self.assertRaises(TypeError, self.amity.load_people(123))
