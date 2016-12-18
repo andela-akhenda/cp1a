@@ -1,8 +1,6 @@
 [![Build Status](https://travis-ci.org/andela-akhenda/cp1a.svg?branch=develop)](https://travis-ci.org/andela-akhenda/cp1a)
-[![Coverage Status](https://coveralls.io/repos/github/andela-akhenda/cp1a/badge.svg?branch=develop&update=2)](https://coveralls.io/github/andela-akhenda/cp1a?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/andela-akhenda/cp1a/badge.svg?branch=develop&update=33)](https://coveralls.io/github/andela-akhenda/cp1a?branch=develop)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/867bd5023ec34cf6973af2d12ccfba28)](https://www.codacy.com/app/joseph-akhenda/cp1a?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-akhenda/cp1a&amp;utm_campaign=Badge_Grade)
-[![Code Climate](https://codeclimate.com/github/andela-akhenda/cp1a/badges/gpa.svg)](https://codeclimate.com/github/andela-akhenda/cp1a)
-[![Issue Count](https://codeclimate.com/github/andela-akhenda/cp1a/badges/issue_count.svg)](https://codeclimate.com/github/andela-akhenda/cp1a)
 [![Code Health](https://landscape.io/github/andela-akhenda/cp1a/develop/landscape.svg?style=flat)](https://landscape.io/github/andela-akhenda/cp1a/develop)
 [![Travis](https://img.shields.io/badge/Chuck%20Norris-Approved-lightgrey.svg)](https://github.com/andela-akhenda/cp1a)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/andela-akhenda/cp1a/blob/master/LICENSE)
@@ -39,6 +37,7 @@ $ pip install -r requirements.txt
 Run tests using one of the following commands:
 ```
 $ python setup.py test
+
 running pytest
 running egg_info
 writing amity.egg-info/PKG-INFO
@@ -98,6 +97,7 @@ tests/test_room.py::TestRoom::test_occupants_increment_on_allocation PASSED
 or
 ```
 $ nosetests --verbose
+
 test_add_person (tests.test_amity.TestAmity) ... ok
 test_add_to_fully_occupied_rooms (tests.test_amity.TestAmity) ... ok
 test_amity_class_instance (tests.test_amity.TestAmity) ... ok
@@ -205,7 +205,7 @@ Your 2 Living Spaces have been successfully created
 
 ### Add Person
 ```
-***add_person*** <first_name> <last_name> <job_type> [<wants_accommodation>]
+add_person <first_name> <last_name> <job_type> [<wants_accommodation>]
 ```
 The <job_type> argument specifies the role of the person being added which can either be 'Fellow' or 'Staff'.
 The <wants_accommodation> argument tells the system whether or not the person being added wants a room or not. It only accepts 'Y' or 'N' characters which stand for 'Yes' or 'No' respectively. It is an optional argument and its default value is 'N'.
@@ -265,6 +265,7 @@ load_people <filename>
 ```
 This commands loads people to the Amity System from a text file.
 It simply takes the name of the file to load a list of people from as the argument.
+
 ***NB:*** All input files are located in the 'data/inputs' directory.
 ```
 Amity > load_people test_people.txt
@@ -311,6 +312,7 @@ print_allocations [--o=FILENAME]
 ```
 This commands prints all of Amity's allocation to the screen and also saves the printout to a text file if provided with a file name.
 It simply takes the name of the file to save the allocations printout as an option argument after '--o='. This argument is optional. If not provided, the printout will not be saved to a file.
+
 ***NB:*** All allocations files are saved in the 'data/outputs/allocations' directory.
 ```
 Amity > print_allocations
@@ -354,6 +356,7 @@ print_unallocated [--o=FILENAME]
 ```
 This commands prints all of Amity's unallocated people to the screen and also saves the printout to a text file if provided with a filename.
 It simply takes the name of the file to save the unallocated persons printout as an option argument after '--o='. This argument is optional. If not provided, the printout will not be saved to a file.
+
 ***NB:*** All unallocated persons files are saved in the 'data/outputs/unallocations' directory.
 ```
 Amity > print_unallocated
@@ -407,6 +410,7 @@ save_state [--db=sqlite_database]
 ```
 This command persists the current state of the system to an SQLite Database.
 It takes an option '--db=' which specifies the name to give the database file which we will use to save the state of the applicaion. If no DB name is given, the state is saved in a file named 'latest.db'
+
 ***NB:*** All DB files are saved in the 'data/states' directory.
 ```
 Amity > save_state
@@ -433,6 +437,7 @@ load_state [<sqlite_database>]
 ```
 This command loads a previously saved state from an SQLite database to the Amity System.
 It takes an argument, <sqlite_database> which specifies the name of the SQLite database file to load the state from. This argument is optional. If no argument is provided, 'latest.db' will be loaded.
+
 ***NB:*** All DB files are loaded from the 'data/states' directory.
 ```
 Amity > load_state December_2016.db
@@ -451,7 +456,7 @@ The state was loaded from 'December_2016.db' file in the 'data/states' directory
 
 ## Credits
 
-1. [Joseph Akhenda](https://github.com/andela-akhenda)
+1. [@andela-akhenda](https://github.com/andela-akhenda)
 
 2. [@kimobrian](https://github.com/kimobrian)
 
@@ -464,7 +469,7 @@ The state was loaded from 'December_2016.db' file in the 'data/states' directory
 
 ### The MIT License (MIT)
 
-Copyright (c) 2016 [Joseph Akhenda](https://www.hendacorp.com).
+Copyright (c) 2016 [Joseph Akhenda](https://github.com/andela-akhenda).
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
