@@ -42,7 +42,15 @@ class TestAmity(unittest.TestCase):
                         "Occupants": []
                     }
                 },
-                "Living Spaces": {}
+                "Living Spaces": {
+                    "dakara": {
+                        "Room Name": "Dakara",
+                        "Room ID": "dakara",
+                        "Capacity": 4,
+                        "Total Persons": 0,
+                        "Occupants": []
+                    }
+                }
                 })
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
@@ -56,7 +64,7 @@ class TestAmity(unittest.TestCase):
                 "Staff": {}
                 })
     @patch.object(Person, "number_of_staff", 0)
-    @patch.object(Person, "number_of_fellows", 0)
+    @patch.object(Person, "number_of_fellows", 1)
     @patch.object(Person, "total_persons", 0)
     def test_add_person(self):
         self.assertRaises(TypeError, self.amity.add_person(123, 'Staff'))
@@ -64,13 +72,13 @@ class TestAmity(unittest.TestCase):
         add = self.amity.add_person('General Hammond', 'Staff')
         add_fellow = self.amity.add_person('Ronon Dex', 'Fellow', 'N')
         add_staff = self.amity.add_person('Samantha Carter', 'Staff', 'Y')
-        self.assertEqual(
-            add,
-            'The Staff has been added successfuly'
+        self.assertIn(
+            'The Staff, General Hammond has been added successfuly',
+            add
         )
-        self.assertEqual(
-            add_fellow,
-            'The Fellow has been added successfuly'
+        self.assertIn(
+            'The Fellow, Ronon Dex has been added successfuly',
+            add_fellow
         )
         self.assertIn(
             'Cannot allocate Staff a living space',
@@ -79,6 +87,10 @@ class TestAmity(unittest.TestCase):
         self.assertIn(
             "Allocate only accepts 'Y' or 'N'",
             self.amity.add_person('General Hammond', 'Staff', 'P')
+        )
+        self.assertIn(
+            "The Fellow, Joseph Akhenda has been added successfuly",
+            self.amity.add_person('Joseph Akhenda', 'Fellow', 'Y')
         )
 
     @patch.dict('amity.person.Person.persons', {
@@ -108,16 +120,48 @@ class TestAmity(unittest.TestCase):
                         "Name": "Jaffa Teal'c",
                         "Role": "Fellow",
                         "Boarding": "Y"
+                    },
+                    "f2": {
+                        "uuid": "f2",
+                        "Name": "Rodney McKay",
+                        "Role": "Fellow",
+                        "Boarding": "Y"
+                    },
+                    "f3": {
+                        "uuid": "f3",
+                        "Name": "Samantha Carter",
+                        "Role": "Fellow",
+                        "Boarding": "N"
                     }
                 },
-                "Staff": {}
+                "Staff": {
+                    "s1": {
+                        "uuid": "s1",
+                        "Name": "Rodney McKay",
+                        "Role": "Staff",
+                        "Boarding": "N"
+                    }
+                }
                 })
-    def test_get_person_details(self):
+    def test_get_person_details_and_uuid(self):
         response = self.amity.get_person_details('f1')
         self.assertEqual(response['uuid'], "f1")
         self.assertEqual(response['Name'], "Jaffa Teal'c")
         self.assertEqual(response['Role'], "Fellow")
         self.assertEqual(response['Boarding'], "Y")
+        self.assertEqual(
+            self.amity.get_person_uuid('Samantha Carter'),
+            "Samantha Carter's ID is: f3"
+        )
+        self.assertIn(
+            "Several persons with the name 'Rodney McKay' exist.",
+            self.amity.get_person_uuid('Rodney McKay')
+        )
+        self.assertIn(
+            "The user, 'Rodney McKays' was not found",
+            self.amity.get_person_uuid('Rodney McKays')
+        )
+        self.assertRaises(TypeError, self.amity.get_person_uuid(123))
 
     @patch.dict('amity.room.Room.rooms', {
                 "Offices": {},
@@ -264,7 +308,7 @@ class TestAmity(unittest.TestCase):
                         "Room Name": "Daedalus",
                         "Room ID": "daedalus",
                         "Capacity": 6,
-                        "Total Persons": 0,
+                        "Total Persons": 1,
                         "Occupants": ['f1']
                     }
                 },
@@ -285,7 +329,7 @@ class TestAmity(unittest.TestCase):
         response = self.amity.reallocate_person('f1', 'Argos')
         self.assertEqual(
             response,
-            "The person has been successfuly re-allocated to Argos"
+            "Daniel Jackson has been successfuly re-allocated from Daedalus to Argos"
         )
         self.assertEqual(
             self.amity.reallocate_person('f1', 'Chulak'),
@@ -479,7 +523,7 @@ class TestAmity(unittest.TestCase):
         )
         self.assertEqual(
             self.amity.print_allocations('test.txt'),
-            "Successfuly printed and saved the allocations to a file"
+            "Successfuly printed and saved the allocations to a file, test.txt in the '/data/outputs' directory."
         )
 
     @patch.dict('amity.room.Room.rooms', {
@@ -545,11 +589,11 @@ class TestAmity(unittest.TestCase):
         # os.chdir(sys.path[0] + '/tests')
         self.assertEqual(
             self.amity.print_unallocated(None),
-            "Successfuly printed the unallocations"
+            "Successfuly printed the unallocated"
         )
         self.assertEqual(
             self.amity.print_unallocated('test.txt'),
-            "Successfuly printed and saved the unallocated to a file"
+            "Successfuly printed and saved the unallocated to a file, test.txt in the '/data/outputs' directory."
         )
 
     @patch.dict('amity.room.Room.rooms', {
