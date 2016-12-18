@@ -184,7 +184,7 @@ class Amity(object):
 
         filenameeters
         ----------
-        name : str
+        uuid : str
             This is a string representing the id of the person.
 
         Returns
@@ -195,6 +195,26 @@ class Amity(object):
 
         """
         return Person.get_person(uuid)
+
+    @staticmethod
+    def get_person_uuid(name):
+        """
+        Get Person UUID.
+
+        This method fetches a Person's UUID using the provided name.
+
+        filenameeters
+        ----------
+        name : str
+            This is a string representing the name of the person.
+
+        Returns
+        -------
+        str
+            This is a string containing the UUID of the person.
+
+        """
+        return Person.get_person_uuid(name)
 
     @staticmethod
     def get_current_occupants(r_id):
@@ -716,19 +736,19 @@ class Amity(object):
 
 
 
-# amity = Amity()
-# amity.create_room(['Abydos'])
-# amity.create_room(['Argos', '-ls'])
+amity = Amity()
+amity.create_room(['Abydos'])
+amity.create_room(['Argos', '-ls'])
 # amity.create_room(['Scala', 'Ruby', '-ls'])
 # amity.create_room(['Hogwarts', 'Oculus', 'Valhalla', 'Ruby'])
 # amity.create_room(['Oculus'])
 
 # amity.create_room(['Dakara', 'Chulak', '-ls'])
 
-# amity.load_people('test_people.txt')
-# amity.add_person('General Hammond', 'Staff')
+amity.load_people('test_people.txt')
+amity.add_person('General Hammond', 'Staff')
 # amity.add_person("Jaffa Teal'c", 'Fellow', 'N')
-# amity.add_person('Samantha Carter', 'Staff', 'Y')
+amity.add_person('Samantha Carter', 'Staff', 'Y')
 
 # amity.add_person('General Hammond 2', 'Staff')
 # amity.add_person("Jaffa Teal'c 2", 'Fellow', 'Y')
@@ -760,3 +780,8 @@ class Amity(object):
 # amity.print_unallocated('test.txt')
 
 # amity.get_person_details('f1')
+
+# amity.add_person('General Hammond', 'Fellow', 'N')
+# amity.add_person('General Hammond', 'Staff', 'Y')
+print amity.get_person_uuid('General Hammondj')
+

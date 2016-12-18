@@ -47,6 +47,24 @@ class Person(object):
             else:
                 return "The person with UUID: " + uuid + " was not found"
 
+    @staticmethod
+    def get_person_uuid(name):
+        ''' This method is responsible for fetching the Person's UUID. '''
+        uuids = []
+        if not isinstance(name, str):
+            return TypeError("This method only accepts a string as the input.")
+        else:
+            people = dict(Person.persons["Fellows"], **Person.persons["Staff"])
+            for person in people.itervalues():
+                if person['Name'] == name:
+                    uuids.append(person['uuid'])
+            if len(uuids) == 1:
+                return name + "'s ID is: " + uuids[0]
+            elif len(uuids) > 1:
+                return "Several persons with the name '" + name + "' exist.\n" + "\n".join(uuids) + "\nFor more information, Print Allocations to see how they are allocated."
+            else:
+                return "The user, '" + name + "'' was not found! Please ensure the person already exists in the system."
+
 
 class Fellow(Person):
     ''' Fellow Class
