@@ -173,7 +173,7 @@ class Amity(object):
             if creation_errors and new_all_persons - all_persons >= 1:
                 for item in creation_errors:
                     msg = msg + "\n- " + item
-                return "\nThe person has been added successfuly but with the following problem(s):" + msg
+                return "\nThe " + role + ", " + name + " has been added successfuly but with the following problem(s):" + msg
             else:
                 msg = "\nThe " + role + ", " + name + " has been added "
                 msg += "successfuly and given the following "
