@@ -6,6 +6,7 @@ Amity is a room allocation system for one of Andela's facilities called Amity.
 Usage:
     app.py create_room <room_name>... [--ls | --of]
     app.py add_person <first_name> <last_name> <job_type> [<wants_accommodation>]
+    app.py get_uuid <first_name> <last_name>
     app.py reallocate_person <person_identifier> <new_room_name>
     app.py load_people <filename>
     app.py print_allocations [--o=FILENAME]
@@ -153,6 +154,22 @@ class AmityCLI(cmd.Cmd):
                         "more information", 'red')
             return
         amity_print(amity.add_person(person_name, role, boarding))
+
+    @docopt_cmd
+    def do_get_uuid(self, args):
+        """
+        This command gets a person's UUID from the Amity database.
+
+        The <first_name> and <last_name> arguments are required to successfuly
+        fetch the person's UUID. It should be noted that in some situations,
+        more than one UUID may be returned when we have people with identical
+        names.
+
+        Usage: get_uuid <first_name> <last_name>
+        """
+        person_name = args['<first_name>'].capitalize()
+        person_name += " " + args['<last_name>'].capitalize()
+        amity_print(amity.get_person_uuid(person_name))
 
     @docopt_cmd
     def do_reallocate_person(self, args):

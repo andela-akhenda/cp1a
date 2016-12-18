@@ -63,7 +63,7 @@ class Person(object):
             elif len(uuids) > 1:
                 return "Several persons with the name '" + name + "' exist.\n" + "\n".join(uuids) + "\nFor more information, Print Allocations to see how they are allocated."
             else:
-                return "The user, '" + name + "'' was not found! Please ensure the person already exists in the system."
+                return "The user, '" + name + "' was not found! Please ensure the person already exists in the system."
 
 
 class Fellow(Person):

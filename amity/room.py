@@ -52,7 +52,7 @@ class Room(object):
         if len(all_rooms) == 0:
             Room.error = "The system has no "
             Room.error += room_key + ". Please add "
-            Room.error += room_type + " before adding a person."
+            Room.error += room_type + " before adding the next person."
             return Room.error
         available_rooms = []
         for room in all_rooms:
