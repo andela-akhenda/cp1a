@@ -207,8 +207,9 @@ Your 2 Living Spaces have been successfully created
 ```
 add_person <first_name> <last_name> <job_type> [<wants_accommodation>]
 ```
-The <job_type> argument specifies the role of the person being added which can either be 'Fellow' or 'Staff'.
-The <wants_accommodation> argument tells the system whether or not the person being added wants a room or not. It only accepts 'Y' or 'N' characters which stand for 'Yes' or 'No' respectively. It is an optional argument and its default value is 'N'.
+The ```<job_type>``` argument specifies the role of the person being added which can either be 'Fellow' or 'Staff'.
+
+The ```<wants_accommodation>``` argument tells the system whether or not the person being added wants a room or not. It only accepts 'Y' or 'N' characters which stand for 'Yes' or 'No' respectively. It is an optional argument and its default value is 'N'.
 
 Adding a Fellow:
 ```
@@ -237,7 +238,7 @@ The Staff, Samantha Carter has been added successfuly and given the following ro
 get_uuid <first_name> <last_name>
 ```
 This command gets a person's UUID from the Amity database.
-The <first_name> and <last_name> arguments are required to successfuly fetch the person's UUID. It should be noted that in some situations, more than one UUID may be returned when we have people with identical names.
+The ```<first_name>``` and ```<last_name>``` arguments are required to successfuly fetch the person's UUID. It should be noted that in some situations, more than one UUID may be returned when we have people with identical names.
 ```
 Amity > get_uuid Rodney McKay
 
@@ -436,7 +437,7 @@ The state was saved to 'December_2016.db' file in the 'data/states' directory.
 load_state [<sqlite_database>]
 ```
 This command loads a previously saved state from an SQLite database to the Amity System.
-It takes an argument, <sqlite_database> which specifies the name of the SQLite database file to load the state from. This argument is optional. If no argument is provided, 'latest.db' will be loaded.
+It takes an argument, ```<sqlite_database>``` which specifies the name of the SQLite database file to load the state from. This argument is optional. If no argument is provided, 'latest.db' will be loaded.
 
 ***NB:*** All DB files are loaded from the 'data/states' directory.
 ```
@@ -448,6 +449,7 @@ You have successfuly loaded a previously saved state.
 The state was loaded from 'December_2016.db' file in the 'data/states' directory.
 
 ```
+
 
 > Watch the following screencast to get the full usage:
 
