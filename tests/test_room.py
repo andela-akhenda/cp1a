@@ -4,7 +4,7 @@ from amity.room import Room, Office, LivingSpace
 from amity.person import Fellow
 
 
-class TestAmity(unittest.TestCase):
+class TestRoom(unittest.TestCase):
 
     def setUp(self):
         self.office = Office("Chulak")

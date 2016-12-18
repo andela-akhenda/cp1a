@@ -3,7 +3,7 @@ from mock import patch
 from amity.person import Person, Fellow, Staff
 
 
-class TestAmity(unittest.TestCase):
+class TestPerson(unittest.TestCase):
 
     def setUp(self):
         self.fellow = Fellow("O'Neall")
