@@ -412,10 +412,10 @@ class Amity(object):
                 os.remove('data/outputs/allocations/' + filename)
             except OSError:
                 pass
-        if all_offices["Offices"] == {} and all_living_spaces["Living Spaces"] == {}:
-            return "There is no data to print or save"
         all_offices["Offices"] = Room.rooms["Offices"]
         all_living_spaces["Living Spaces"] = Room.rooms["Living Spaces"]
+        if all_offices["Offices"] == {} and all_living_spaces["Living Spaces"] == {}:
+            return "There is no data to print or save"
         print_rooms(all_offices, 'Offices', filename)
         print_rooms(all_living_spaces, 'Living Spaces', filename)
         if filename:
