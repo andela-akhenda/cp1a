@@ -160,9 +160,9 @@ class AmityCLI(cmd.Cmd):
         This command reallocates a person to another room.
 
         It takes thes person's UUID which can be gotten from the list of
-        allocations when print_allocations is run so it is highly recommended
-        that you first get the person's UUID from the print_allocations
-        command.
+        allocations in a particular room when print_room is run so it is
+        highly recommended that you first get the person's UUID from the
+        print_room command.
 
         The second argument it takes is the name of the room to which you want
         to allocate the person to.

@@ -173,7 +173,7 @@ class Amity(object):
             if creation_errors and new_all_persons - all_persons >= 1:
                 for item in creation_errors:
                     msg = msg + "\n- " + item
-                return "The person has been added successfuly but with the following problem(s):" + msg
+                return "\nThe person has been added successfuly but with the following problem(s):" + msg
             else:
                 msg = "\nThe " + role + ", " + name + " has been added "
                 msg += "successfuly and given the following "
@@ -181,9 +181,9 @@ class Amity(object):
                     msg += "rooms:-"
                 else:
                     msg += "room:-"
-                msg += "\n1. Office       --> " + given_office
+                msg += "\n1. Office       --> " + given_office.capitalize()
                 if given_ls:
-                    msg += "\n2. Living Space --> " + given_ls
+                    msg += "\n2. Living Space --> " + given_ls.capitalize()
                 msg += "\n"
                 return msg
 
@@ -261,8 +261,7 @@ class Amity(object):
                 occupants_dict[occupant] = Person.get_person(occupant)
             return occupants_dict
 
-    @staticmethod
-    def reallocate_person(uuid, room_name):
+    def reallocate_person(self, uuid, room_name):
         """
         Reallocate a Person.
 
@@ -319,7 +318,7 @@ class Amity(object):
             if Room.rooms[type_of_reallocation][r_id]['Total Persons'] < Room.rooms[type_of_reallocation][r_id]['Capacity']:
                 Room.rooms[type_of_reallocation][r_id]['Occupants'].append(uuid)
                 Room.rooms[type_of_reallocation][r_id]['Total Persons'] += 1
-                return "The person has been successfuly re-allocated to " + room_name
+                return self.get_person_details(uuid)['Name'] + " has been successfuly re-allocated from " + previous_room.capitalize() + " to " + room_name.capitalize()
             elif Room.rooms[type_of_reallocation][r_id]['Total Persons'] == Room.rooms[type_of_reallocation][r_id]['Capacity']:
                 return room_name.capitalize() + " is fully booked. Try another room."
 
@@ -413,14 +412,14 @@ class Amity(object):
                 os.remove('data/outputs/allocations/' + filename)
             except OSError:
                 pass
-        all_offices["Offices"] = Room.rooms["Offices"]
-        all_living_spaces["Living Spaces"] = Room.rooms["Living Spaces"]
         if all_offices["Offices"] == {} and all_living_spaces["Living Spaces"] == {}:
             return "There is no data to print or save"
+        all_offices["Offices"] = Room.rooms["Offices"]
+        all_living_spaces["Living Spaces"] = Room.rooms["Living Spaces"]
         print_rooms(all_offices, 'Offices', filename)
         print_rooms(all_living_spaces, 'Living Spaces', filename)
         if filename:
-            return "Successfuly printed and saved the allocations to a file"
+            return "Successfuly printed and saved the allocations to a file, " + filename + " in the '/data/outputs' directory."
         else:
             return "Successfuly printed the allocations"
 
@@ -496,14 +495,14 @@ class Amity(object):
         temp_unallocated_ls = [uuid for uuid in uuids if uuid not in ids_in_ls]
         unallocated_ls = [uuid for uuid in temp_unallocated_ls if uuid[0] != 's']
 
-        print_people(unallocated_o, 'Offices', filename)
-        print_people(unallocated_ls, 'Living Spaces', filename)
         if unallocated_o == [] and unallocated_ls == []:
             return "There is no data to print or save"
+        print_people(unallocated_o, 'Offices', filename)
+        print_people(unallocated_ls, 'Living Spaces', filename)
         if filename:
-            return "Successfuly printed and saved the unallocated to a file"
+            return "Successfuly printed and saved the unallocated to a file, " + filename + " in the '/data/outputs' directory."
         else:
-            return "Successfuly printed the unallocations"
+            return "Successfuly printed the unallocated"
 
     def print_room(self, r_id):
         """
@@ -537,10 +536,11 @@ class Amity(object):
                 room = rooms[r_id]
             else:
                 return "No room with the name '" + r_name + "' exists!"
-            print room['Room Name'].upper()
-            print "-" * 25
             if len(room['Occupants']) == 0:
                 return r_name + " has no occupants"
+            else:
+                print room['Room Name'].upper()
+                print "-" * 25
             for occupant in room['Occupants']:
                 print room['Occupants'][occupant]['uuid'].upper() + "\t",
                 print room['Occupants'][occupant]['Boarding'].upper() + "\t",
