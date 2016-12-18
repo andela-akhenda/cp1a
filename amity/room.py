@@ -76,6 +76,7 @@ class Room(object):
 
         Room.rooms[room_key][random_room]['Total Persons'] += 1
         Room.error = ""
+        return random_room
 
 
 class Office(Room):

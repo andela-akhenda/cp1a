@@ -138,25 +138,27 @@ class Amity(object):
             all_persons = Person.total_persons
             creation_errors = []
             msg = ''
+            given_office = ''
+            given_ls = ''
             if allocate != "Y" and allocate != "N":
                 creation_errors.append("Allocate only accepts 'Y' or 'N'")
             if role == "Staff":
                 temp_staff = Staff(name)
                 if allocate == "Y":
                     creation_errors.append("Cannot allocate Staff a living space")
-                Room.add_person(temp_staff.uuid, "Staff", "Office")
+                given_office = Room.add_person(temp_staff.uuid, "Staff", "Office")
                 if Room.error:
                     creation_errors.append(Room.error)
             elif role == "Fellow":
                 temp_fellow = Fellow(name)
                 if allocate == "Y":
                     Person.persons["Fellows"][temp_fellow.uuid]['Boarding'] = 'Y'
-                    Room.add_person(temp_fellow.uuid, "Fellows", "Office", "Y")
+                    given_office = Room.add_person(temp_fellow.uuid, "Fellows", "Office", "Y")
                     if Room.error:
                         creation_errors.append(Room.error)
-                    Room.add_person(temp_fellow.uuid, "Fellows", "Living Space", "Y")
+                    given_ls = Room.add_person(temp_fellow.uuid, "Fellows", "Living Space", "Y")
                 elif allocate == "N":
-                    Room.add_person(temp_fellow.uuid, "Fellows", "Office")
+                    given_office = Room.add_person(temp_fellow.uuid, "Fellows", "Office")
                 if Room.error:
                     creation_errors.append(Room.error)
             else:
@@ -173,7 +175,17 @@ class Amity(object):
                     msg = msg + "\n- " + item
                 return "The person has been added successfuly but with the following problem(s):" + msg
             else:
-                return "The " + role + " has been added successfuly"
+                msg = "\nThe " + role + ", " + name + " has been added "
+                msg += "successfuly and given the following "
+                if given_ls:
+                    msg += "rooms:-"
+                else:
+                    msg += "room:-"
+                msg += "\n1. Office       --> " + given_office
+                if given_ls:
+                    msg += "\n2. Living Space --> " + given_ls
+                msg += "\n"
+                return msg
 
     @staticmethod
     def get_person_details(uuid):
@@ -571,7 +583,7 @@ class Amity(object):
                             person_allocate = person_list[3]
                         else:
                             person_allocate = "N"
-                        self.add_person(person_name, person_role, person_allocate)
+                        print self.add_person(person_name, person_role, person_allocate)
             else:
                 return "The given file does not exist. \nPlease make sure "\
                         "'" + infile + "' is a valid filename and it exists "\
@@ -736,19 +748,19 @@ class Amity(object):
 
 
 
-amity = Amity()
-amity.create_room(['Abydos'])
-amity.create_room(['Argos', '-ls'])
+# amity = Amity()
+# amity.create_room(['Abydos'])
+# amity.create_room(['Argos', '-ls'])
 # amity.create_room(['Scala', 'Ruby', '-ls'])
 # amity.create_room(['Hogwarts', 'Oculus', 'Valhalla', 'Ruby'])
 # amity.create_room(['Oculus'])
 
 # amity.create_room(['Dakara', 'Chulak', '-ls'])
 
-amity.load_people('test_people.txt')
-amity.add_person('General Hammond', 'Staff')
+# amity.load_people('test_people.txt')
+# amity.add_person('General Hammond', 'Staff')
 # amity.add_person("Jaffa Teal'c", 'Fellow', 'N')
-amity.add_person('Samantha Carter', 'Staff', 'Y')
+# amity.add_person('Samantha Carter', 'Staff', 'Y')
 
 # amity.add_person('General Hammond 2', 'Staff')
 # amity.add_person("Jaffa Teal'c 2", 'Fellow', 'Y')
@@ -783,5 +795,5 @@ amity.add_person('Samantha Carter', 'Staff', 'Y')
 
 # amity.add_person('General Hammond', 'Fellow', 'N')
 # amity.add_person('General Hammond', 'Staff', 'Y')
-print amity.get_person_uuid('General Hammondj')
+# print amity.get_person_uuid('General Hammondj')
 
