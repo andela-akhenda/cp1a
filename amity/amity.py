@@ -25,7 +25,7 @@ class Amity(object):
         Attributes:
             rooms (dict): This is a dict of all Room IDs of rooms in the
             system.
-            persons (dict): This is a dict of all UUIDs of persons in the
+            persons (dict): This is a dict of all IDs of persons in the
             system.
             total_rooms (int): This is an integer representing all the
             rooms in the system.
@@ -146,19 +146,19 @@ class Amity(object):
                 temp_staff = Staff(name)
                 if allocate == "Y":
                     creation_errors.append("Cannot allocate Staff a living space")
-                given_office = Room.add_person(temp_staff.uuid, "Staff", "Office")
+                given_office = Room.add_person(temp_staff.person_id, "Staff", "Office")
                 if Room.error:
                     creation_errors.append(Room.error)
             elif role == "Fellow":
                 temp_fellow = Fellow(name)
                 if allocate == "Y":
-                    Person.persons["Fellows"][temp_fellow.uuid]['Boarding'] = 'Y'
-                    given_office = Room.add_person(temp_fellow.uuid, "Fellows", "Office", "Y")
+                    Person.persons["Fellows"][temp_fellow.person_id]['Boarding'] = 'Y'
+                    given_office = Room.add_person(temp_fellow.person_id, "Fellows", "Office", "Y")
                     if Room.error:
                         creation_errors.append(Room.error)
-                    given_ls = Room.add_person(temp_fellow.uuid, "Fellows", "Living Space", "Y")
+                    given_ls = Room.add_person(temp_fellow.person_id, "Fellows", "Living Space", "Y")
                 elif allocate == "N":
-                    given_office = Room.add_person(temp_fellow.uuid, "Fellows", "Office")
+                    given_office = Room.add_person(temp_fellow.person_id, "Fellows", "Office")
                 if Room.error:
                     creation_errors.append(Room.error)
             else:
@@ -188,7 +188,7 @@ class Amity(object):
                 return msg
 
     @staticmethod
-    def get_person_details(uuid):
+    def get_person_details(person_id):
         """
         Get Person details.
 
@@ -196,7 +196,7 @@ class Amity(object):
 
         filenameeters
         ----------
-        uuid : str
+        person_id : str
             This is a string representing the id of the person.
 
         Returns
@@ -206,14 +206,14 @@ class Amity(object):
             a person.
 
         """
-        return Person.get_person(uuid)
+        return Person.get_person(person_id)
 
     @staticmethod
-    def get_person_uuid(name):
+    def get_person_id(name):
         """
-        Get Person UUID.
+        Get Person ID.
 
-        This method fetches a Person's UUID using the provided name.
+        This method fetches a Person's ID using the provided name.
 
         filenameeters
         ----------
@@ -223,10 +223,10 @@ class Amity(object):
         Returns
         -------
         str
-            This is a string containing the UUID of the person.
+            This is a string containing the ID of the person.
 
         """
-        return Person.get_person_uuid(name)
+        return Person.get_person_id(name)
 
     @staticmethod
     def get_current_occupants(r_id):
@@ -261,17 +261,17 @@ class Amity(object):
                 occupants_dict[occupant] = Person.get_person(occupant)
             return occupants_dict
 
-    def reallocate_person(self, uuid, room_name):
+    def reallocate_person(self, person_id, room_name):
         """
         Reallocate a Person.
 
         This method reallocates a Person from a room to another room
-        given the destination room name and the Unique User ID (uuid)
+        given the destination room name and the Unique User ID (person_id)
         of the user.
 
         filenameeters
         ----------
-        uuid : str
+        person_id : str
             This is a string representing the unique id of the Person.
         room_name : str
             This is a string representing name of the room the Person
@@ -283,23 +283,23 @@ class Amity(object):
             This is a string showing success or failure of the operation.
 
         """
-        if not isinstance(uuid, str) or not isinstance(room_name, str):
+        if not isinstance(person_id, str) or not isinstance(room_name, str):
             return TypeError("This method only accepts strings as the input.")
         else:
             current_rooms = []
             previous_room = ''
             type_of_reallocation = ''
-            uuid = uuid.lower()
+            person_id = person_id.lower()
             r_id = room_name.lower()
             all_offices = Room.rooms["Offices"]
             all_living_spaces = Room.rooms["Living Spaces"]
             rooms = dict(Room.rooms["Offices"], **Room.rooms["Living Spaces"])
             persons = dict(Person.persons["Fellows"], **Person.persons["Staff"])
             rooms = copy.deepcopy(rooms)
-            if uuid not in persons.keys():
-                return "The given UUID does not exist!"
+            if person_id not in persons.keys():
+                return "The given Person ID does not exist!"
             for room in rooms:
-                if uuid in rooms[room]['Occupants']:
+                if person_id in rooms[room]['Occupants']:
                     current_rooms.append(room)
             if r_id in all_offices:
                 type_of_reallocation = "Offices"
@@ -311,14 +311,14 @@ class Amity(object):
                 if room in Room.rooms[type_of_reallocation]:
                     previous_room = room
             # Now, let's remove the user from the previous room
-            Room.rooms[type_of_reallocation][previous_room]['Occupants'].remove(uuid)
+            Room.rooms[type_of_reallocation][previous_room]['Occupants'].remove(person_id)
             # Let's not forget to decrement the number of Total Persons
             Room.rooms[type_of_reallocation][previous_room]['Total Persons'] -= 1
             # Now, let's reallocate the user to the given room
             if Room.rooms[type_of_reallocation][r_id]['Total Persons'] < Room.rooms[type_of_reallocation][r_id]['Capacity']:
-                Room.rooms[type_of_reallocation][r_id]['Occupants'].append(uuid)
+                Room.rooms[type_of_reallocation][r_id]['Occupants'].append(person_id)
                 Room.rooms[type_of_reallocation][r_id]['Total Persons'] += 1
-                return self.get_person_details(uuid)['Name'] + " has been successfuly re-allocated from " + previous_room.capitalize() + " to " + room_name.capitalize()
+                return self.get_person_details(person_id)['Name'] + " has been successfuly re-allocated from " + previous_room.capitalize() + " to " + room_name.capitalize()
             elif Room.rooms[type_of_reallocation][r_id]['Total Persons'] == Room.rooms[type_of_reallocation][r_id]['Capacity']:
                 return room_name.capitalize() + " is fully booked. Try another room."
 
@@ -381,8 +381,8 @@ class Amity(object):
             print(title_header)
             for room_details in rooms[rooms_type].itervalues():
                 if room_details['Total Persons'] > 0:
-                    for uuid in room_details['Occupants']:
-                        occupant = Person.get_person(uuid)
+                    for person_id in room_details['Occupants']:
+                        occupant = Person.get_person(person_id)
                         all_members.append(occupant['Name'].upper())
                     all_members_len = 0
                     count = 0
@@ -444,15 +444,15 @@ class Amity(object):
             This is a string showing success or failure of the operation.
 
         """
-        def print_people(uuids, title, filename=None):
+        def print_people(person_ids, title, filename=None):
             misc_variable = 1
             title_header = "=" * 30 + "\n"
             title_header += "Without " + title + "\n"
             title_header += "=" * 30 + "\n"
             print title_header
-            for uuid in uuids:
-                person = Person.get_person(uuid)
-                print person['uuid'].upper(),
+            for person_id in person_ids:
+                person = Person.get_person(person_id)
+                print person['person_id'].upper(),
                 if title == "Living Spaces":
                     print "(" + person['Boarding'] + ")",
                 print "\t" + person['Name'].upper() + "\n"
@@ -460,11 +460,11 @@ class Amity(object):
                     with open('data/outputs/unallocations/' + filename, 'a') as f:
                         if misc_variable == 1:
                             f.write(title_header)
-                        output = person['uuid'].upper()
+                        output = person['person_id'].upper()
                         if title == "Living Spaces":
                             output += "(" + person['Boarding'] + ")"
                         output += "\t" + person['Name'].upper() + "\n"
-                        if uuid == uuids[-1]:
+                        if person_id == person_ids[-1]:
                             output += "\n\n"
                         f.write(output)
                         misc_variable = 0
@@ -476,24 +476,24 @@ class Amity(object):
             except OSError:
                 pass
         persons = dict(Person.persons["Fellows"], **Person.persons["Staff"])
-        uuids = []
+        person_ids = []
         for person_details in persons.itervalues():
-            uuids.append(person_details['uuid'])
+            person_ids.append(person_details['person_id'])
 
         all_offices = Room.rooms["Offices"]
         ids_in_offices = []
         for room_details in all_offices.itervalues():
             for occupant in room_details['Occupants']:
                 ids_in_offices.append(occupant)
-        unallocated_o = [uuid for uuid in uuids if uuid not in ids_in_offices]
+        unallocated_o = [person_id for person_id in person_ids if person_id not in ids_in_offices]
 
         all_living_spaces = Room.rooms["Living Spaces"]
         ids_in_ls = []
         for room_details in all_living_spaces.itervalues():
             for occupant in room_details['Occupants']:
                 ids_in_ls.append(occupant)
-        temp_unallocated_ls = [uuid for uuid in uuids if uuid not in ids_in_ls]
-        unallocated_ls = [uuid for uuid in temp_unallocated_ls if uuid[0] != 's']
+        temp_unallocated_ls = [person_id for person_id in person_ids if person_id not in ids_in_ls]
+        unallocated_ls = [person_id for person_id in temp_unallocated_ls if person_id[0] != 's']
 
         if unallocated_o == [] and unallocated_ls == []:
             return "There is no data to print or save"
@@ -542,7 +542,7 @@ class Amity(object):
                 print room['Room Name'].upper()
                 print "-" * 25
             for occupant in room['Occupants']:
-                print room['Occupants'][occupant]['uuid'].upper() + "\t",
+                print room['Occupants'][occupant]['person_id'].upper() + "\t",
                 print room['Occupants'][occupant]['Boarding'].upper() + "\t",
                 print room['Occupants'][occupant]['Name'].upper()
             return room
@@ -618,8 +618,8 @@ class Amity(object):
                         Capacity, 'Total Persons', Occupants) VALUES(?, ?, ?,\
                         ?, ?, ?)''', (i['Room ID'], i['Room Name'], category, i['Capacity'], i['Total Persons'], ', '.join(i['Occupants'])))
                 elif category == "Fellow" or category == "Staff":
-                    cursor.execute('''INSERT INTO Persons (uuid, Name, Role,\
-                        Boarding) VALUES(?, ?, ?, ?)''', (i['uuid'], i['Name'], i['Role'], i['Boarding']))
+                    cursor.execute('''INSERT INTO Persons ('Person ID', Name, Role,\
+                        Boarding) VALUES(?, ?, ?, ?)''', (i['person_id'], i['Name'], i['Role'], i['Boarding']))
 
         self.dbError = False
         # if outfile is None:
@@ -639,7 +639,7 @@ class Amity(object):
                     Name TEXT NOT NULL, Type TEXT NOT NULL,
                     Capacity INT NOT NULL, 'Total Persons' INT NOT NULL,
                     Occupants TEXT);
-                    CREATE TABLE Persons(uuid TEXT PRIMARY KEY NOT NULL,
+                    CREATE TABLE Persons('Person ID' TEXT PRIMARY KEY NOT NULL,
                     Name TEXT NOT NULL, Role TEXT NOT NULL,
                     Boarding TEXT NOT NULL);
                     ''')
@@ -705,7 +705,7 @@ class Amity(object):
                     count += 1
                 elif str(row[2]) == old_category and table == "Persons":
                     output_dict[category][str(row[0])] = {}
-                    output_dict[category][str(row[0])]['uuid'] = str(row[0])
+                    output_dict[category][str(row[0])]['person_id'] = str(row[0])
                     output_dict[category][str(row[0])]['Name'] = str(row[1])
                     output_dict[category][str(row[0])]['Role'] = str(row[2])
                     output_dict[category][str(row[0])]['Boarding'] = str(row[3])

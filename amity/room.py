@@ -39,7 +39,7 @@ class Room(object):
         self.capacity = capacity
 
     @staticmethod
-    def add_person(uuid, role, room_type, allocate="N"):
+    def add_person(person_id, role, room_type, allocate="N"):
         ''' Add Person Method
 
             This method is responsible for adding a person to a random room.
@@ -63,8 +63,8 @@ class Room(object):
             Room.error += room_key + " available. All rooms are booked."
             return Room.error
         random_room = choice(available_rooms)
-        Room.rooms[room_key][random_room]['Occupants'].append(uuid)
-        Person.persons[role][uuid]['Boarding'] = allocate
+        Room.rooms[room_key][random_room]['Occupants'].append(person_id)
+        Person.persons[role][person_id]['Boarding'] = allocate
 
         # if type(Room.rooms[room_key][random_room]['Total Persons']) is not str:
         #     Room.rooms[room_key][random_room]['Total Persons'] += 1

@@ -51,7 +51,7 @@ class TestPerson(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jack O'Neall",
                         "Role": "Fellow",
                         "Boarding": "Y"
@@ -65,18 +65,18 @@ class TestPerson(unittest.TestCase):
         self.assertEqual(
             response,
             {
-                "uuid": "f1",
+                "person_id": "f1",
                 "Name": "Jack O'Neall",
                 "Role": "Fellow",
                 "Boarding": "Y"
             }
         )
 
-    def test_get_person_with_invalid_uuid(self):
+    def test_get_person_with_invalid_person_id(self):
         response = Person.get_person('f2f3')
         self.assertEqual(
             response,
-            "The person with UUID: f2f3 was not found"
+            "The person with ID: f2f3 was not found"
         )
 
     def test_get_person_only_accepts_strings(self):

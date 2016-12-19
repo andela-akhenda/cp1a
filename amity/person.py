@@ -11,57 +11,57 @@ class Person(object):
     persons = {"Fellows": {}, "Staff": {}}
     error = ""
 
-    def __init__(self, uuid, name, role):
+    def __init__(self, person_id, name, role):
         if role == "Fellow":
             role_key = role + "s"
         else:
             role_key = role
-        self.persons[role_key][uuid] = {}
-        self.persons[role_key][uuid]["uuid"] = uuid
-        self.persons[role_key][uuid]["Name"] = name
-        self.persons[role_key][uuid]["Role"] = role
-        self.persons[role_key][uuid]["Boarding"] = "N"
+        self.persons[role_key][person_id] = {}
+        self.persons[role_key][person_id]["person_id"] = person_id
+        self.persons[role_key][person_id]["Name"] = name
+        self.persons[role_key][person_id]["Role"] = role
+        self.persons[role_key][person_id]["Boarding"] = "N"
         if role == "Fellow":
             Person.number_of_fellows += 1
         elif role == "Staff":
             Person.number_of_staff += 1
         Person.total_persons = Person.number_of_fellows + Person.number_of_staff
         Person.error = ""
-        self.uuid = uuid
+        self.person_id = person_id
         self.role = role
         self.name = name
 
     @staticmethod
-    def get_person(uuid):
+    def get_person(person_id):
         ''' This method is responsible for fetching all the
             Person's details.
         '''
-        if not isinstance(uuid, str):
+        if not isinstance(person_id, str):
             return TypeError("This method only accepts a string as the input.")
         else:
             all_fellows = Person.persons["Fellows"]
             all_staff = Person.persons["Staff"]
             all_persons = dict(all_fellows, **all_staff)
-            if uuid in all_persons.keys():
-                return all_persons[uuid]
+            if person_id in all_persons.keys():
+                return all_persons[person_id]
             else:
-                return "The person with UUID: " + uuid + " was not found"
+                return "The person with ID: " + person_id + " was not found"
 
     @staticmethod
-    def get_person_uuid(name):
-        ''' This method is responsible for fetching the Person's UUID. '''
-        uuids = []
+    def get_person_id(name):
+        ''' This method is responsible for fetching the Person's ID. '''
+        person_ids = []
         if not isinstance(name, str):
             return TypeError("This method only accepts a string as the input.")
         else:
             people = dict(Person.persons["Fellows"], **Person.persons["Staff"])
             for person in people.itervalues():
                 if person['Name'] == name:
-                    uuids.append(person['uuid'])
-            if len(uuids) == 1:
-                return name + "'s ID is: " + uuids[0]
-            elif len(uuids) > 1:
-                return "Several persons with the name '" + name + "' exist.\n" + "\n".join(uuids) + "\nFor more information, Print Allocations to see how they are allocated."
+                    person_ids.append(person['person_id'])
+            if len(person_ids) == 1:
+                return name + "'s ID is: " + person_ids[0]
+            elif len(person_ids) > 1:
+                return "Several persons with the name '" + name + "' exist.\n" + "\n".join(person_ids) + "\nFor more information, Print Allocations to see how they are allocated."
             else:
                 return "The user, '" + name + "' was not found! Please ensure the person already exists in the system."
 

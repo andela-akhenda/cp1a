@@ -66,13 +66,13 @@ class TestRoom(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jack O'Neall",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f2": {
-                        "uuid": "f2",
+                        "person_id": "f2",
                         "Name": "Rodney McKay",
                         "Role": "Fellow",
                         "Boarding": "Y"
@@ -121,13 +121,13 @@ class TestRoom(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f3": {
-                        "uuid": "f3",
+                        "person_id": "f3",
                         "Name": "Ronon Dex",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f4": {
-                        "uuid": "f4",
+                        "person_id": "f4",
                         "Name": "Daniel Jackson",
                         "Role": "Fellow",
                         "Boarding": "Y"

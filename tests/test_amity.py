@@ -55,7 +55,7 @@ class TestAmity(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jaffa Teal'c",
                         "Role": "Fellow",
                         "Boarding": "Y"
@@ -103,32 +103,32 @@ class TestAmity(unittest.TestCase):
     @patch('amity.amity.Amity.get_person_details')
     def test_if_a_person_is_fellow_or_staff(self, mock_get_person_details):
         mock_get_person_details.return_value = {
-            "uuid": "s1",
+            "person_id": "s1",
             "Name": "General Hammond",
             "Role": "Staff",
             "Boarding": "N"
         }
         self.amity.add_person('General Hammond', 'Staff')
-        # we should pass 'uuid' here
+        # we should pass 'person_id' here
         response = mock_get_person_details('s1')
         self.assertEqual(response['Role'], "Staff")
 
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jaffa Teal'c",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f2": {
-                        "uuid": "f2",
+                        "person_id": "f2",
                         "Name": "Rodney McKay",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f3": {
-                        "uuid": "f3",
+                        "person_id": "f3",
                         "Name": "Samantha Carter",
                         "Role": "Fellow",
                         "Boarding": "N"
@@ -136,32 +136,32 @@ class TestAmity(unittest.TestCase):
                 },
                 "Staff": {
                     "s1": {
-                        "uuid": "s1",
+                        "person_id": "s1",
                         "Name": "Rodney McKay",
                         "Role": "Staff",
                         "Boarding": "N"
                     }
                 }
                 })
-    def test_get_person_details_and_uuid(self):
+    def test_get_person_details_and_person_id(self):
         response = self.amity.get_person_details('f1')
-        self.assertEqual(response['uuid'], "f1")
+        self.assertEqual(response['person_id'], "f1")
         self.assertEqual(response['Name'], "Jaffa Teal'c")
         self.assertEqual(response['Role'], "Fellow")
         self.assertEqual(response['Boarding'], "Y")
         self.assertEqual(
-            self.amity.get_person_uuid('Samantha Carter'),
+            self.amity.get_person_id('Samantha Carter'),
             "Samantha Carter's ID is: f3"
         )
         self.assertIn(
             "Several persons with the name 'Rodney McKay' exist.",
-            self.amity.get_person_uuid('Rodney McKay')
+            self.amity.get_person_id('Rodney McKay')
         )
         self.assertIn(
             "The user, 'Rodney McKays' was not found",
-            self.amity.get_person_uuid('Rodney McKays')
+            self.amity.get_person_id('Rodney McKays')
         )
-        self.assertRaises(TypeError, self.amity.get_person_uuid(123))
+        self.assertRaises(TypeError, self.amity.get_person_id(123))
 
     @patch.dict('amity.room.Room.rooms', {
                 "Offices": {},
@@ -249,31 +249,31 @@ class TestAmity(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jack O'Neall",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f2": {
-                        "uuid": "f2",
+                        "person_id": "f2",
                         "Name": "Rodney McKay",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f3": {
-                        "uuid": "f3",
+                        "person_id": "f3",
                         "Name": "Ronon Dex",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f4": {
-                        "uuid": "f4",
+                        "person_id": "f4",
                         "Name": "Daniel Jackson",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f5": {
-                        "uuid": "f5",
+                        "person_id": "f5",
                         "Name": "Samantha Carter",
                         "Role": "Fellow",
                         "Boarding": "N"
@@ -317,7 +317,7 @@ class TestAmity(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Daniel Jackson",
                         "Role": "Fellow",
                         "Boarding": "Y"
@@ -344,11 +344,11 @@ class TestAmity(unittest.TestCase):
                 "Fellows": {},
                 "Staff": {}
                 })
-    def test_reallocate_non_existent_uuid(self):
+    def test_reallocate_non_existent_person_id(self):
         response = self.amity.reallocate_person('d1', 'Dakara')
         self.assertEqual(
             response,
-            "The given UUID does not exist!"
+            "The given Person ID does not exist!"
         )
 
     @patch.dict('amity.room.Room.rooms', {
@@ -440,13 +440,13 @@ class TestAmity(unittest.TestCase):
             occupants,
             {
                 "f1": {
-                    "uuid": "f1",
+                    "person_id": "f1",
                     "Name": "Daniel Jackson",
                     "Role": "Fellow",
                     "Boarding": "Y"
                 },
                 "s1": {
-                    "uuid": "s1",
+                    "person_id": "s1",
                     "Name": "General Hammond",
                     "Role": "Staff",
                     "Boarding": "N"
@@ -494,13 +494,13 @@ class TestAmity(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jack O'Neall",
                         "Role": "Fellow",
                         "Boarding": "Y"
                     },
                     "f2": {
-                        "uuid": "f2",
+                        "person_id": "f2",
                         "Name": "Rodney McKay",
                         "Role": "Fellow",
                         "Boarding": "Y"
@@ -508,7 +508,7 @@ class TestAmity(unittest.TestCase):
                 },
                 "Staff": {
                     "s1": {
-                        "uuid": "s1",
+                        "person_id": "s1",
                         "Name": "Ronon Dex",
                         "Role": "Staff",
                         "Boarding": "Y"
@@ -564,13 +564,13 @@ class TestAmity(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jack O'Neall",
                         "Role": "Fellow",
                         "Boarding": "N"
                     },
                     "f2": {
-                        "uuid": "f2",
+                        "person_id": "f2",
                         "Name": "Rodney McKay",
                         "Role": "Fellow",
                         "Boarding": "Y"
@@ -578,7 +578,7 @@ class TestAmity(unittest.TestCase):
                 },
                 "Staff": {
                     "s1": {
-                        "uuid": "s1",
+                        "person_id": "s1",
                         "Name": "Ronon Dex",
                         "Role": "Staff",
                         "Boarding": "N"
@@ -637,7 +637,7 @@ class TestAmity(unittest.TestCase):
                     "f1": {
                         "Boarding": "Y",
                         "Role": "Fellow",
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jaffa Teal'c"
                     }
                 }
@@ -709,13 +709,13 @@ class TestAmity(unittest.TestCase):
     @patch.dict('amity.person.Person.persons', {
                 "Fellows": {
                     "f1": {
-                        "uuid": "f1",
+                        "person_id": "f1",
                         "Name": "Jack O'Neall",
                         "Role": "Fellow",
                         "Boarding": "N"
                     },
                     "f2": {
-                        "uuid": "f2",
+                        "person_id": "f2",
                         "Name": "Rodney McKay",
                         "Role": "Fellow",
                         "Boarding": "Y"
@@ -723,7 +723,7 @@ class TestAmity(unittest.TestCase):
                 },
                 "Staff": {
                     "s1": {
-                        "uuid": "s1",
+                        "person_id": "s1",
                         "Name": "Ronon Dex",
                         "Role": "Staff",
                         "Boarding": "N"

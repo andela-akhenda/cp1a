@@ -6,7 +6,7 @@ Amity is a room allocation system for one of Andela's facilities called Amity.
 Usage:
     app.py create_room <room_name>... [--ls | --of]
     app.py add_person <first_name> <last_name> <job_type> [<wants_accommodation>]
-    app.py get_uuid <first_name> <last_name>
+    app.py get_person_id <first_name> <last_name>
     app.py reallocate_person <person_identifier> <new_room_name>
     app.py load_people <filename>
     app.py print_allocations [--o=FILENAME]
@@ -156,29 +156,29 @@ class AmityCLI(cmd.Cmd):
         amity_print(amity.add_person(person_name, role, boarding))
 
     @docopt_cmd
-    def do_get_uuid(self, args):
+    def do_get_person_id(self, args):
         """
-        This command gets a person's UUID from the Amity database.
+        This command gets a person's ID from the Amity database.
 
         The <first_name> and <last_name> arguments are required to successfuly
-        fetch the person's UUID. It should be noted that in some situations,
-        more than one UUID may be returned when we have people with identical
+        fetch the person's ID. It should be noted that in some situations,
+        more than one Person ID may be returned when we have people with identical
         names.
 
-        Usage: get_uuid <first_name> <last_name>
+        Usage: get_person_id <first_name> <last_name>
         """
         person_name = args['<first_name>'].capitalize()
         person_name += " " + args['<last_name>'].capitalize()
-        amity_print(amity.get_person_uuid(person_name))
+        amity_print(amity.get_person_id(person_name))
 
     @docopt_cmd
     def do_reallocate_person(self, args):
         """
         This command reallocates a person to another room.
 
-        It takes thes person's UUID which can be gotten from the list of
+        It takes thes person's ID which can be gotten from the list of
         allocations in a particular room when print_room is run so it is
-        highly recommended that you first get the person's UUID from the
+        highly recommended that you first get the person's ID from the
         print_room command.
 
         The second argument it takes is the name of the room to which you want
@@ -186,9 +186,9 @@ class AmityCLI(cmd.Cmd):
 
         Usage: reallocate_person <person_identifier> <new_room_name>
         """
-        uuid = args['<person_identifier>'].lower()
+        person_id = args['<person_identifier>'].lower()
         room_name = args['<new_room_name>']
-        amity_print(amity.reallocate_person(uuid, room_name))
+        amity_print(amity.reallocate_person(person_id, room_name))
 
     @docopt_cmd
     def do_load_people(self, args):

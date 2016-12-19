@@ -61,7 +61,7 @@ tests/test_amity.py::TestAmity::test_create_multiple_rooms PASSED
 tests/test_amity.py::TestAmity::test_create_room PASSED
 tests/test_amity.py::TestAmity::test_create_room_receives_list PASSED
 tests/test_amity.py::TestAmity::test_get_empty_rooms PASSED
-tests/test_amity.py::TestAmity::test_get_person_details_and_uuid PASSED
+tests/test_amity.py::TestAmity::test_get_person_details_and_person_id PASSED
 tests/test_amity.py::TestAmity::test_if_a_person_is_fellow_or_staff PASSED
 tests/test_amity.py::TestAmity::test_load_people_from_file PASSED
 tests/test_amity.py::TestAmity::test_load_state PASSED
@@ -75,7 +75,7 @@ tests/test_amity.py::TestAmity::test_print_empty_room PASSED
 tests/test_amity.py::TestAmity::test_print_room PASSED
 tests/test_amity.py::TestAmity::test_print_unallocated PASSED
 tests/test_amity.py::TestAmity::test_print_unallocated_with_no_previous_file PASSED
-tests/test_amity.py::TestAmity::test_reallocate_non_existent_uuid PASSED
+tests/test_amity.py::TestAmity::test_reallocate_non_existent_person_id PASSED
 tests/test_amity.py::TestAmity::test_reallocate_person_accepts_strings_only PASSED
 tests/test_amity.py::TestAmity::test_reallocate_person_to_an_office PASSED
 tests/test_amity.py::TestAmity::test_response_on_no_rooms PASSED
@@ -106,7 +106,7 @@ test_create_multiple_rooms (tests.test_amity.TestAmity) ... ok
 test_create_room (tests.test_amity.TestAmity) ... ok
 test_create_room_receives_list (tests.test_amity.TestAmity) ... ok
 test_get_empty_rooms (tests.test_amity.TestAmity) ... ok
-test_get_person_details_and_uuid (tests.test_amity.TestAmity) ... ok
+test_get_person_details_and_person_id (tests.test_amity.TestAmity) ... ok
 test_if_a_person_is_fellow_or_staff (tests.test_amity.TestAmity) ... ok
 test_load_people_from_file (tests.test_amity.TestAmity) ... ok
 test_load_state (tests.test_amity.TestAmity) ... ok
@@ -120,7 +120,7 @@ test_print_empty_room (tests.test_amity.TestAmity) ... ok
 test_print_room (tests.test_amity.TestAmity) ... ok
 test_print_unallocated (tests.test_amity.TestAmity) ... ok
 test_print_unallocated_with_no_previous_file (tests.test_amity.TestAmity) ... ok
-test_reallocate_non_existent_uuid (tests.test_amity.TestAmity) ... ok
+test_reallocate_non_existent_person_id (tests.test_amity.TestAmity) ... ok
 test_reallocate_person_accepts_strings_only (tests.test_amity.TestAmity) ... ok
 test_reallocate_person_to_an_office (tests.test_amity.TestAmity) ... ok
 test_response_on_no_rooms (tests.test_amity.TestAmity) ... ok
@@ -129,7 +129,7 @@ test_add_person (tests.test_person.TestPerson) ... ok
 test_child_class_instance (tests.test_person.TestPerson) ... ok
 test_get_person (tests.test_person.TestPerson) ... ok
 test_get_person_only_accepts_strings (tests.test_person.TestPerson) ... ok
-test_get_person_with_invalid_uuid (tests.test_person.TestPerson) ... ok
+test_get_person_with_invalid_person_id (tests.test_person.TestPerson) ... ok
 test_if_a_person_is_fellow_or_staff (tests.test_person.TestPerson) ... ok
 test_number_of_persons_increment_after_addition (tests.test_person.TestPerson) ... ok
 test_add_to_fully_occupied_rooms (tests.test_room.TestRoom) ... ok
@@ -166,7 +166,7 @@ Documented commands (type help <topic>):
 ========================================
 add_person   help         print_allocations  quit
 create_room  load_people  print_room         reallocate_person
-get_uuid     load_state   print_unallocated  save_state
+get_person_id     load_state   print_unallocated  save_state
 ```
 To see individual command documentation, type 'help' followed by the command:
 ```
@@ -233,14 +233,14 @@ The Staff, Samantha Carter has been added successfuly and given the following ro
 
 ```
 
-### Get Person's UUID
+### Get Person's ID
 ```
-get_uuid <first_name> <last_name>
+get_person_id <first_name> <last_name>
 ```
-This command gets a person's UUID from the Amity database.
-The ```<first_name>``` and ```<last_name>``` arguments are required to successfuly fetch the person's UUID. It should be noted that in some situations, more than one UUID may be returned when we have people with identical names.
+This command gets a person's ID from the Amity database.
+The ```<first_name>``` and ```<last_name>``` arguments are required to successfuly fetch the person's ID. It should be noted that in some situations, more than one Person ID may be returned when we have people with identical names.
 ```
-Amity > get_uuid Rodney McKay
+Amity > get_person_id Rodney McKay
 
 Rodney Mckay's ID is: s2
 
@@ -251,7 +251,7 @@ Rodney Mckay's ID is: s2
 reallocate_person <person_identifier> <new_room_name>
 ```
 This command reallocates a person to another room.
-It takes thes person's UUID which can be gotten from the list of allocations in a particular room when print_room is run so it is highly recommended that you first get the person's UUID from the print_room command.
+It takes thes person's ID which can be gotten from the list of allocations in a particular room when print_room is run so it is highly recommended that you first get the person's ID from the print_room command.
 The second argument it takes is the name of the room to which you want to allocate the person to.
 ```
 Amity > reallocate_person f4 daedalus
