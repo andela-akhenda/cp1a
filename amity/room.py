@@ -65,15 +65,6 @@ class Room(object):
         random_room = choice(available_rooms)
         Room.rooms[room_key][random_room]['Occupants'].append(person_id)
         Person.persons[role][person_id]['Boarding'] = allocate
-
-        # if type(Room.rooms[room_key][random_room]['Total Persons']) is not str:
-        #     Room.rooms[room_key][random_room]['Total Persons'] += 1
-        # else:
-        #     Room.rooms[room_key][random_room]['Total Persons'] = 0
-
-        # Uncomment the above lines if the import from DB messes the Total
-        # Persons field. Remember to also delete the line below.
-
         Room.rooms[room_key][random_room]['Total Persons'] += 1
         Room.error = ""
         return random_room

@@ -76,9 +76,6 @@ class Fellow(Person):
     '''
 
     def __init__(self, name):
-        # super(Fellow, self).__init__(
-        #     "f" + str(Person.number_of_fellows + 1), name, "Fellow"
-        # )
         initializer(self, Fellow, name)
 
 
@@ -92,9 +89,6 @@ class Staff(Person):
     '''
 
     def __init__(self, name):
-        # super(Staff, self).__init__(
-        #     "s" + str(Person.number_of_staff + 1), name, "Staff"
-        # )
         initializer(self, Staff, name)
 
 
