@@ -19,6 +19,10 @@ class TestRoom(unittest.TestCase):
         self.assertIsInstance(self.office, Room)
         self.assertIsInstance(self.living_space, Room)
 
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {},
+                "Living Spaces": {}
+                })
     def test_create_room(self):
         daedalus = Office("Daedalus")
         abydos = LivingSpace("Abydos")
@@ -28,8 +32,6 @@ class TestRoom(unittest.TestCase):
         self.assertEqual(abydos.name, "Abydos")
         self.assertEqual(abydos.room_type, "Living Space")
         self.assertEqual(abydos.capacity, 4)
-        del(daedalus)
-        del(abydos)
 
     @patch.dict('amity.room.Room.rooms', {
                 "Offices": {
