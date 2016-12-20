@@ -305,6 +305,8 @@ class Amity(object):
                 type_of_reallocation = "Offices"
             elif r_id in all_living_spaces:
                 type_of_reallocation = "Living Spaces"
+                if Person.get_person(person_id)['Role'] == 'Staff':
+                    return "Staff cannot be reallocated to a Living Space"
             else:
                 return "The room given does not exist"
             for room in current_rooms:
