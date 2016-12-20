@@ -311,9 +311,11 @@ class Amity(object):
                 if room in Room.rooms[type_of_reallocation]:
                     previous_room = room
             # Now, let's remove the user from the previous room
-            Room.rooms[type_of_reallocation][previous_room]['Occupants'].remove(person_id)
-            # Let's not forget to decrement the number of Total Persons
-            Room.rooms[type_of_reallocation][previous_room]['Total Persons'] -= 1
+            # Handle the bug pointed out by @andela-jmuli
+            if previous_room:
+                Room.rooms[type_of_reallocation][previous_room]['Occupants'].remove(person_id)
+                # Let's not forget to decrement the number of Total Persons
+                Room.rooms[type_of_reallocation][previous_room]['Total Persons'] -= 1
             # Now, let's reallocate the user to the given room
             if Room.rooms[type_of_reallocation][r_id]['Total Persons'] < Room.rooms[type_of_reallocation][r_id]['Capacity']:
                 Room.rooms[type_of_reallocation][r_id]['Occupants'].append(person_id)
