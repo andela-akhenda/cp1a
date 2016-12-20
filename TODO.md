@@ -1,3 +1,3 @@
-- Draw Class UML diagrams
-- Write tests
-- Start creating the system
+- Update tests
+- Finish creating the system
+- Update Class UML diagrams

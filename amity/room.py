@@ -1,3 +1,7 @@
+from random import choice
+from person import Person
+
+
 class Room(object):
     ''' Room Class
 
@@ -5,20 +9,65 @@ class Room(object):
         in the Amity System. It relies heavily on the information it
         gets from it's Child Classes.
     '''
+    number_of_offices = 0
+    number_of_living_spaces = 0
+    total_rooms = 0
+    rooms = {"Offices": {}, "Living Spaces": {}}
+    error = ""
 
-    def __init__(self, name, type):
+    def __init__(self, name, room_type, capacity):
+        room_key = room_type + "s"
+        room_id = name.lower()
+        all_room_ids = Room.rooms['Offices'].keys() + Room.rooms['Living Spaces'].keys()
+        if name.lower() in all_room_ids:
+            Room.error = "A room named '" + name + "' already exists. Please choose another name."
+        else:
+            self.rooms[room_key][room_id] = {}
+            self.rooms[room_key][room_id]["Room Name"] = name
+            self.rooms[room_key][room_id]["Room ID"] = room_id
+            self.rooms[room_key][room_id]["Capacity"] = capacity
+            self.rooms[room_key][room_id]["Total Persons"] = 0
+            self.rooms[room_key][room_id]["Occupants"] = []
+            if room_type == "Office":
+                Room.number_of_offices += 1
+            elif room_type == "Living Space":
+                Room.number_of_living_spaces += 1
+            Room.total_rooms = Room.number_of_offices + Room.number_of_living_spaces
+            Room.error = ""
         self.name = name
-        self.type = type
-        self.total_persons = 0
-        self.allocated_persons = []
+        self.room_type = room_type
+        self.capacity = capacity
 
-    def add_person(self, uuid):
-        ''' This method is responsible for adding a person to a room. '''
-        pass
+    @staticmethod
+    def add_person(person_id, role, room_type, allocate="N"):
+        ''' Add Person Method
 
-    def remove_person(self, uuid):
-        ''' This method is responsible for removing a person from a room. '''
-        pass
+            This method is responsible for adding a person to a random room.
+            It also checks if the system has any rooms before adding a person
+            or if the rooms available are not fully occupied before assigning
+            the person a random room.
+        '''
+        room_key = room_type + "s"
+        all_rooms = Room.rooms[room_key].keys()
+        if len(all_rooms) == 0:
+            Room.error = "The system has no "
+            Room.error += room_key + ". Please add "
+            Room.error += room_type + " before adding the next person."
+            return Room.error
+        available_rooms = []
+        for room in all_rooms:
+            if Room.rooms[room_key][room]['Total Persons'] < Room.rooms[room_key][room]['Capacity']:
+                available_rooms.append(room)
+        if len(available_rooms) == 0:
+            Room.error = "There are currently no "
+            Room.error += room_key + " available. All rooms are booked."
+            return Room.error
+        random_room = choice(available_rooms)
+        Room.rooms[room_key][random_room]['Occupants'].append(person_id)
+        Person.persons[role][person_id]['Boarding'] = allocate
+        Room.rooms[room_key][random_room]['Total Persons'] += 1
+        Room.error = ""
+        return random_room
 
 
 class Office(Room):
@@ -29,11 +78,9 @@ class Office(Room):
         so as to dictate how the Room is created. It also handles
         other activities related to a Office.
     '''
-    number_of_offices = 0
 
     def __init__(self, name):
-        super(Office, self).__init__(name, "Office")
-        self.max_persons = 6
+        super(Office, self).__init__(name, "Office", 6)
 
 
 class LivingSpace(Room):
@@ -44,8 +91,6 @@ class LivingSpace(Room):
         so as to dictate how the Room is created. It also handles
         other activities related to a Living Space.
     '''
-    number_of_living_spaces = 0
 
     def __init__(self, name):
-        super(LivingSpace, self).__init__(name, "Living Space")
-        self.max_persons = 4
+        super(LivingSpace, self).__init__(name, "Living Space", 4)
