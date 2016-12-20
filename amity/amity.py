@@ -166,10 +166,6 @@ class Amity(object):
                     "Please check that the entered role is either 'Fellow' or 'Staff'"
                 )
             new_all_persons = Person.total_persons
-            # if creation_errors and new_all_persons - all_persons == 0:
-            #     for item in creation_errors:
-            #         msg = msg + "\n" + item
-            #     return "No person was added to the system beacuse:" + msg
             if creation_errors and new_all_persons - all_persons >= 1:
                 for item in creation_errors:
                     msg = msg + "\n- " + item
@@ -306,7 +302,7 @@ class Amity(object):
             elif r_id in all_living_spaces:
                 type_of_reallocation = "Living Spaces"
                 if Person.get_person(person_id)['Role'] == 'Staff':
-                    return "Staff cannot be reallocated to a Living Space"
+                    return "Staff cannot be reallocated to a Living Space."
             else:
                 return "The room given does not exist"
             for room in current_rooms:
@@ -631,8 +627,6 @@ class Amity(object):
                         Boarding) VALUES(?, ?, ?, ?)''', (i['person_id'], i['Name'], i['Role'], i['Boarding']))
 
         self.dbError = False
-        # if outfile is None:
-        #     outfile = 'latest.db'
         conn = db.connect('data/states/' + outfile)
         with conn:
             # With the 'with' keyword, the Python interpreter automatically
