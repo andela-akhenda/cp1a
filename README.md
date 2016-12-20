@@ -164,9 +164,9 @@ Amity > help
 
 Documented commands (type help <topic>):
 ========================================
-add_person   help         print_allocations  quit
-create_room  load_people  print_room         reallocate_person
-get_person_id     load_state   print_unallocated  save_state
+add_person     help         print_allocations  quit
+create_room    load_people  print_room         reallocate_person
+get_person_id  load_state   print_unallocated  save_state
 ```
 To see individual command documentation, type 'help' followed by the command:
 ```
