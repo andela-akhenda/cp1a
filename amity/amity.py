@@ -698,8 +698,8 @@ class Amity(object):
                     output_dict[category][str(row[0])] = {}
                     output_dict[category][str(row[0])]['Room Name'] = str(row[1])
                     output_dict[category][str(row[0])]['Room ID'] = str(row[0])
-                    output_dict[category][str(row[0])]['Capacity'] = str(row[3])
-                    output_dict[category][str(row[0])]['Total Persons'] = str(row[4])
+                    output_dict[category][str(row[0])]['Capacity'] = row[3]
+                    output_dict[category][str(row[0])]['Total Persons'] = row[4]
                     if len(row[5]) != 0:
                         output_dict[category][str(row[0])]['Occupants'] = str(row[5]).split(', ')
                     else:
