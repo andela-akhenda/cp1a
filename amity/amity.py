@@ -409,6 +409,11 @@ class Amity(object):
                             f.write(output)
                             misc_variable = 0
                     all_members = []
+                else:
+                    print room_details['Room Name'].upper()
+                    print "-" * 46
+                    print "There are currently no occupants in this room."
+                    print "\n"
             print "\n\n\n"
 
         if filename is not None and isinstance(filename, str):
