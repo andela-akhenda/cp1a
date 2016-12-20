@@ -166,10 +166,6 @@ class Amity(object):
                     "Please check that the entered role is either 'Fellow' or 'Staff'"
                 )
             new_all_persons = Person.total_persons
-            # if creation_errors and new_all_persons - all_persons == 0:
-            #     for item in creation_errors:
-            #         msg = msg + "\n" + item
-            #     return "No person was added to the system beacuse:" + msg
             if creation_errors and new_all_persons - all_persons >= 1:
                 for item in creation_errors:
                     msg = msg + "\n- " + item
@@ -306,7 +302,7 @@ class Amity(object):
             elif r_id in all_living_spaces:
                 type_of_reallocation = "Living Spaces"
                 if Person.get_person(person_id)['Role'] == 'Staff':
-                    return "Staff cannot be reallocated to a Living Space"
+                    return "Staff cannot be reallocated to a Living Space."
             else:
                 return "The room given does not exist"
             for room in current_rooms:
@@ -325,32 +321,6 @@ class Amity(object):
                 return self.get_person_details(person_id)['Name'] + " has been successfuly re-allocated from " + previous_room.capitalize() + " to " + room_name.capitalize()
             elif Room.rooms[type_of_reallocation][r_id]['Total Persons'] == Room.rooms[type_of_reallocation][r_id]['Capacity']:
                 return room_name.capitalize() + " is fully booked. Try another room."
-
-    @staticmethod
-    def get_empty_rooms():
-        """
-        Get all empty room in the system.
-
-        This method goes through the entire system and looks for all
-        rooms that have not been allocated anyone. In other words, all
-        empty rooms in the system.
-
-        Returns
-        -------
-        dict
-            This is a dictionary of all the empty rooms in the system.
-
-        """
-        empty_rooms = {"Offices": [], "Living Spaces": []}
-        all_offices = Room.rooms["Offices"]
-        all_living_spaces = Room.rooms["Living Spaces"]
-        for room, details in all_offices.iteritems():
-            if details['Total Persons'] == 0 and len(details['Occupants']) == 0:
-                empty_rooms["Offices"].append(room)
-        for room, details in all_living_spaces.iteritems():
-            if details['Total Persons'] == 0 and len(details['Occupants']) == 0:
-                empty_rooms["Living Spaces"].append(room)
-        return empty_rooms
 
     @staticmethod
     def print_allocations(filename=None):
@@ -631,8 +601,6 @@ class Amity(object):
                         Boarding) VALUES(?, ?, ?, ?)''', (i['person_id'], i['Name'], i['Role'], i['Boarding']))
 
         self.dbError = False
-        # if outfile is None:
-        #     outfile = 'latest.db'
         conn = db.connect('data/states/' + outfile)
         with conn:
             # With the 'with' keyword, the Python interpreter automatically

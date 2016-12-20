@@ -236,13 +236,6 @@ class TestAmity(unittest.TestCase):
                         "Capacity": 4,
                         "Total Persons": 4,
                         "Occupants": ['f1', 'f2', 'f3', 'f4']
-                    },
-                    "daedalus": {
-                        "Room Name": "Daedalus",
-                        "Room ID": "daedalus",
-                        "Capacity": 4,
-                        "Total Persons": 1,
-                        "Occupants": ['f5']
                     }
                 }
                 })
@@ -281,11 +274,40 @@ class TestAmity(unittest.TestCase):
                 },
                 "Staff": {}
                 })
-    def test_add_to_fully_occupied_rooms(self):
+    def test_add_to_fully_occupied_room(self):
         response = self.amity.reallocate_person('f5', 'Chulak')
         self.assertEqual(
             response,
             "Chulak is fully booked. Try another room."
+        )
+
+    @patch.dict('amity.room.Room.rooms', {
+                "Offices": {},
+                "Living Spaces": {
+                    "daedalus": {
+                        "Room Name": "Daedalus",
+                        "Room ID": "daedalus",
+                        "Capacity": 4,
+                        "Total Persons": 0,
+                        "Occupants": []
+                    }
+                }
+                })
+    @patch.dict('amity.person.Person.persons', {
+                "Fellows": {},
+                "Staff": {
+                    "s1": {
+                        "person_id": "s1",
+                        "Name": "General Hammond",
+                        "Role": "Staff",
+                        "Boarding": "N"
+                    }
+                }
+                })
+    def test_reallocate_staff_to_a_living_space(self):
+        self.assertEqual(
+            self.amity.reallocate_person('s1', 'Daedalus'),
+            "Staff cannot be reallocated to a Living Space."
         )
 
     def test_reallocate_person_accepts_strings_only(self):
@@ -349,48 +371,6 @@ class TestAmity(unittest.TestCase):
         self.assertEqual(
             response,
             "The given Person ID does not exist!"
-        )
-
-    @patch.dict('amity.room.Room.rooms', {
-                "Offices": {
-                    "abydos": {
-                        "Room Name": "Abydos",
-                        "Room ID": "abydos",
-                        "Capacity": 6,
-                        "Total Persons": 0,
-                        "Occupants": []
-                    },
-                    "chulak": {
-                        "Room Name": "Chulak",
-                        "Room ID": "chulak",
-                        "Capacity": 6,
-                        "Total Persons": 0,
-                        "Occupants": []
-                    }
-                },
-                "Living Spaces": {
-                    "argos": {
-                        "Room Name": "Argos",
-                        "Room ID": "argos",
-                        "Capacity": 4,
-                        "Total Persons": 0,
-                        "Occupants": []
-                    }
-                }
-                })
-    def test_get_empty_rooms(self):
-        response = self.amity.get_empty_rooms()
-        self.assertIn(
-            'abydos',
-            response['Offices']
-        )
-        self.assertIn(
-            'chulak',
-            response['Offices']
-        )
-        self.assertIn(
-            'argos',
-            response['Living Spaces']
         )
 
     @patch.dict('amity.room.Room.rooms', {
@@ -479,6 +459,13 @@ class TestAmity(unittest.TestCase):
                         "Capacity": 6,
                         "Total Persons": 2,
                         "Occupants": ['f1', 's1']
+                    },
+                    "chulak": {
+                        "Room Name": "Chulak",
+                        "Room ID": "chulak",
+                        "Capacity": 6,
+                        "Total Persons": 0,
+                        "Occupants": []
                     }
                 },
                 "Living Spaces": {

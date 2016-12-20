@@ -1,8 +1,7 @@
-[![Build Status](https://travis-ci.org/andela-akhenda/cp1a.svg?branch=develop)](https://travis-ci.org/andela-akhenda/cp1a)
-[![Coverage Status](https://coveralls.io/repos/github/andela-akhenda/cp1a/badge.svg?branch=develop&update=33)](https://coveralls.io/github/andela-akhenda/cp1a?branch=develop)
+[![Build Status](https://travis-ci.org/andela-akhenda/cp1a.svg?branch=master)](https://travis-ci.org/andela-akhenda/cp1a)
+[![Coverage Status](https://coveralls.io/repos/github/andela-akhenda/cp1a/badge.svg?branch=master&update=3)](https://coveralls.io/github/andela-akhenda/cp1a?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/867bd5023ec34cf6973af2d12ccfba28)](https://www.codacy.com/app/joseph-akhenda/cp1a?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-akhenda/cp1a&amp;utm_campaign=Badge_Grade)
-[![Code Health](https://landscape.io/github/andela-akhenda/cp1a/develop/landscape.svg?style=flat)](https://landscape.io/github/andela-akhenda/cp1a/develop)
-[![Travis](https://img.shields.io/badge/Chuck%20Norris-Approved-lightgrey.svg)](https://github.com/andela-akhenda/cp1a)
+[![Code Health](https://landscape.io/github/andela-akhenda/cp1a/master/landscape.svg?style=flat)](https://landscape.io/github/andela-akhenda/cp1a/master)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/andela-akhenda/cp1a/blob/master/LICENSE)
 [![PyPI](https://img.shields.io/badge/Python-2.7-blue.svg)](https://www.python.org/downloads/release/python-2712/)
 
