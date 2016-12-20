@@ -323,32 +323,6 @@ class Amity(object):
                 return room_name.capitalize() + " is fully booked. Try another room."
 
     @staticmethod
-    def get_empty_rooms():
-        """
-        Get all empty room in the system.
-
-        This method goes through the entire system and looks for all
-        rooms that have not been allocated anyone. In other words, all
-        empty rooms in the system.
-
-        Returns
-        -------
-        dict
-            This is a dictionary of all the empty rooms in the system.
-
-        """
-        empty_rooms = {"Offices": [], "Living Spaces": []}
-        all_offices = Room.rooms["Offices"]
-        all_living_spaces = Room.rooms["Living Spaces"]
-        for room, details in all_offices.iteritems():
-            if details['Total Persons'] == 0 and len(details['Occupants']) == 0:
-                empty_rooms["Offices"].append(room)
-        for room, details in all_living_spaces.iteritems():
-            if details['Total Persons'] == 0 and len(details['Occupants']) == 0:
-                empty_rooms["Living Spaces"].append(room)
-        return empty_rooms
-
-    @staticmethod
     def print_allocations(filename=None):
         """
         Print Room allocations.
