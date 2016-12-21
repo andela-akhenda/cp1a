@@ -10,12 +10,12 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup_requires = [
-    'pytest-runner',
+    'pytest-runner'
     ]
 
 tests_require = [
     'pytest-cov',
-    'pytest',
+    'pytest'
     ]
 
 setup(
